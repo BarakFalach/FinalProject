@@ -8,12 +8,12 @@ const icons = {
   group: require('../../assets/group.png'),
 };
 
-const GroupItemFooter = () => {
+const GroupItemFooter = props => {
   return (
     <View style={groupItemFooterStyles.container}>
-      <GroupIconItem iconSource={icons.score} value="154" />
-      <GroupIconItem iconSource={icons.podium} value="5th" />
-      <GroupIconItem iconSource={icons.group} value="32" />
+      <GroupIconItem iconSource={icons.score} value={props.user.score} />
+      <GroupIconItem iconSource={icons.podium} value={`1st`} />
+      <GroupIconItem iconSource={icons.group} value={props.groupLength} />
     </View>
   );
 };
@@ -21,7 +21,7 @@ const GroupItemFooter = () => {
 export const groupItemFooterStyles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
   },

@@ -1,12 +1,14 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
+import {GroupContext} from '../../App';
 import GroupItemFooter from './GroupItemFooter';
 
 const GroupItem = () => {
+  const {group} = React.useContext(GroupContext);
   return (
     <View style={styles.container}>
       <View style={{flex: 2, paddingTop: 5}}>
-        <Text style={styles.headerText}>Group Name</Text>
+        <Text style={styles.headerText}>{group.name}</Text>
       </View>
       <View style={{flex: 5}}>
         <Image
@@ -15,7 +17,10 @@ const GroupItem = () => {
         />
       </View>
       <View style={styles.iconContainer}>
-        <GroupItemFooter />
+        <GroupItemFooter
+          groupLength={group.users.length}
+          user={group.users[0]}
+        />
       </View>
     </View>
   );

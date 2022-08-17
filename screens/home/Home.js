@@ -16,10 +16,12 @@ function HomeScreen({navigation}) {
 
   return (
     <ThemeProvider>
-      <LinearGradient colors={['#57CC99', '#22577A']} style={styles.container}>
+      <LinearGradient
+        colors={['#57CC99', '#22577A']}
+        style={screenStyle.container}>
         <HomeHeader />
         <View style={{flex: 0.7}}>
-          <View style={styles.body}>
+          <View style={screenStyle.body}>
             <GroupItem />
           </View>
         </View>
@@ -54,7 +56,7 @@ function HomeScreen({navigation}) {
   );
 }
 
-const styles = StyleSheet.create({
+export const screenStyle = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
