@@ -13,11 +13,11 @@ function TableContainer(props) {
           onPress={props.navigateToHomePage}
           size={20}
           name="arrow-left"
-          color="white"
+          color="black"
         />
         <View style={styles.groupName}>
           <Text style={styles.text}>{group.name}</Text>
-          <View size={20} name="chevron-down" color="white" />
+          <View size={20} name="chevron-down" color="black" />
         </View>
         <View />
       </View>
@@ -35,16 +35,22 @@ const styles = StyleSheet.create({
     flex: 0.1,
     alignItems: 'center',
     justifyContent: 'space-around',
-    backgroundColor: '#57CC99',
+    backgroundColor: '#F1FAEE',
     shadowColor: '#171717',
     shadowOffset: {width: -2, height: -2},
     shadowOpacity: 0.8,
     shadowRadius: 3,
     flexDirection: 'row',
   },
-  text: {color: 'white', fontWeight: '500', fontSize: 16},
+  text: {color: 'black', fontWeight: '500', fontSize: 16},
   groupName: {flexDirection: 'row', justifyContent: 'space-around', flex: 0.4},
-  listContainer: {borderWidth: 2, flex: 0.9, padding: 10, overflow: 'scroll'},
+  listContainer: {
+    flex: 0.9,
+    padding: 10,
+    overflow: 'scroll',
+    borderWidth: 2,
+    borderColor: '#AAC1A3',
+  },
 });
 
 export default TableContainer;
