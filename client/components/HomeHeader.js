@@ -1,7 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import {helloWorld} from '../api/api';
 
 const HomeHeader = () => {
+  const [message, setMessage] = React.useState('Waiting....');
+  useEffect(() => {
+    helloWorld().then(data => {
+      setMessage(data);
+    });
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.stepsContainer}>
