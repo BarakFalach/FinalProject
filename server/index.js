@@ -13,30 +13,37 @@ app.get('/', (req, res) => {
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
-const stepCounter = async () => {
-  const result = await axios({
-    method: 'POST',
-    headers: {
-      authorization: 'Bearer ' + TOKEN,
-    },
-    'Content-Type': 'application/json',
-    url: `https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate`,
-    data: {
-      aggregateBy: [
-        {
-          dataTypeName: 'com.google.step_count',
-          dataSourceId:
-            'derived:com.google.step_count.delta:com.google.android.gms:estimated_steps',
-        },
-      ],
-      bucketByTime: { durationMillis: 86400000 },
-      startTimeMillis: 1665683185085-86400000,
-      endTimeMillis: 1665683185085,
-    },
-  });
-  console.log('f')
-  console.log(JSON.stringify(result.data.bucket[0].dataset[0].point[0].value[0].intVal));
-}
+//routing
+const user = require("./user/user-api-routes");
+app.use("/user", user);
 
-stepCounter()
+const group = require("./group/group-api-routes");
+app.use("/group", group);
+
+// const stepCounter = async () => {
+//   const result = await axios({
+//     method: 'POST',
+//     headers: {
+//       authorization: 'Bearer ' + TOKEN,
+//     },nvtkilhrkhdtvhtjcbjticnkrdgvdjcj
+//     'Content-Type': 'application/json',
+//     url: `https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate`,
+//     data: {
+//       aggregateBy: [
+//         {
+//           dataTypeName: 'com.google.step_count',
+//           dataSourceId:
+//             'derived:com.google.step_count.delta:com.google.android.gms:estimated_steps',
+//         },
+//       ],
+//       bucketByTime: { durationMillis: 86400000 },
+//       startTimeMillis: 1665683185085-86400000,
+//       endTimeMillis: 1665683185085,
+//     },
+//   });
+//   console.log('f')
+//   console.log(JSON.stringify(result.data.bucket[0].dataset[0].point[0].value[0].intVal));
+// }
+
+// stepCounter()
 
