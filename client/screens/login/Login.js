@@ -6,7 +6,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 import {View} from 'react-native';
 import axios from 'axios';
-import {Input, Button, ThemeProvider} from '@rneui/themed';
+import {Button} from '@rneui/themed';
 
 const webClientId =
   '268322603163-mh7i98imn3m5s949bdqa1pi5bt6kmbmq.apps.googleusercontent.com';
@@ -17,6 +17,8 @@ function LoginScreen({navigation}) {
     GoogleSignin.configure({
       webClientId,
       offlineAccess: true,
+      forceCodeForRefreshToken: true,
+      scopes: ['https://www.googleapis.com/auth/fitness.activity.read'],
     });
   }, []);
 
@@ -25,13 +27,14 @@ function LoginScreen({navigation}) {
   };
 
   const authClient = async () => {
-    const url = 'http://10.0.2.2:3000/';
+    const url = 'http://10.0.2.2:3000/auth';
     const data = JSON.stringify({
       id_token: user.idToken,
     });
     const headers = {
       'content-type': 'application/json',
       idToken: user.idToken,
+      code: user.serverAuthCode,
     };
 
     await axios.post(url, data, {
