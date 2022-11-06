@@ -11,8 +11,11 @@ import {Button} from '@rneui/themed';
 const webClientId =
   '268322603163-mh7i98imn3m5s949bdqa1pi5bt6kmbmq.apps.googleusercontent.com';
 
+const url = 'http://10.0.2.2:3000/';
+
 function LoginScreen({navigation}) {
   const [user, setUser] = useState({});
+  const [authenticated, setAuthenticated] = useState(false);
   useEffect(() => {
     GoogleSignin.configure({
       webClientId,
@@ -27,7 +30,6 @@ function LoginScreen({navigation}) {
   };
 
   const authClient = async () => {
-    const url = 'http://10.0.2.2:3000/auth';
     const data = JSON.stringify({
       id_token: user.idToken,
     });
@@ -37,9 +39,19 @@ function LoginScreen({navigation}) {
       code: user.serverAuthCode,
     };
 
-    await axios.post(url, data, {
-      headers,
-    });
+    await axios
+      .post(`${url}auth`, data, {
+        headers,
+      })
+      .then(() => setAuthenticated(true))
+      .catch(err => console.log(err));
+  };
+
+  const getName = async () => {
+    await axios
+      .get(`${url}user`)
+      .then(res => setUser(res.data))
+      .catch(err => console.log(err));
   };
 
   const signIn = async () => {
@@ -85,6 +97,7 @@ function LoginScreen({navigation}) {
       />
       <Button onPress={signOut}>Sign Out</Button>
       <Button onPress={authClient}>Auth Server</Button>
+      {authenticated && <Button onPress={navigateToHomePage}>Get Name</Button>}
     </View>
   );
 }
