@@ -1,8 +1,9 @@
 const express = require('express');
 const app = express();
-const port = 3000;
 const { OAuth2Client } = require('google-auth-library');
 const axios = require('axios');
+require('dotenv').config()
+
 
 const users = {
 }
@@ -11,17 +12,23 @@ const users = {
 const findUser = (email) => {
     return users[email];
 }
-
-
-const webClientId =
-  '268322603163-mh7i98imn3m5s949bdqa1pi5bt6kmbmq.apps.googleusercontent.com'; //android
-const clientSecret = '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'
-const url = "http://localhost:3000";
+const port = process.env.PORT || 3000;
+const url = `http://localhost:${port}`;
+const webClientId = process.env.WEB_CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
 
 app.use('/user',async (req, res, next) => {
-  const user = await db.user.findFirst({where: { id:  req.session.userId }})
-  req.user = user
-  next()
+  const user = findUser(req.query.email);
+  if (user) {
+    console.log('user found');
+    req.user = user;
+    next();
+  }
+  else {
+    console.log('user not found');
+    console.log(users)
+    res.status(401).send('User not found');
+  }
 })
   
   const client = new OAuth2Client(webClientId, clientSecret, url);
@@ -45,7 +52,7 @@ app.use('/user',async (req, res, next) => {
         count
       }
       users[email] = newUser;
-      req.session.userId = newUser.email;
+      // req.session.userId = newUser.email;
       res.send();
     } catch (err) {
       console.log(err.message);
@@ -53,8 +60,7 @@ app.use('/user',async (req, res, next) => {
   });
 
   app.get('/user', (req, res) => {
-    const user = findUser(req.session.userId);
-    res.send(user.name);
+    res.send(req.user.name);
   });
 
   const getTokensFromCode = async (code) => {

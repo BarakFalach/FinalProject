@@ -14,7 +14,7 @@ const webClientId =
 const url = 'http://10.0.2.2:3000/';
 
 function LoginScreen({navigation}) {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(undefined);
   const [authenticated, setAuthenticated] = useState(false);
   useEffect(() => {
     GoogleSignin.configure({
@@ -97,7 +97,8 @@ function LoginScreen({navigation}) {
       />
       <Button onPress={signOut}>Sign Out</Button>
       <Button onPress={authClient}>Auth Server</Button>
-      {authenticated && <Button onPress={navigateToHomePage}>Get Name</Button>}
+      {authenticated && <Button onPress={getName}>Get Name</Button>}
+      {user?.name && <Button onPress={navigateToHomePage}>{user?.name}</Button>}
     </View>
   );
 }
