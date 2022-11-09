@@ -20,7 +20,7 @@ app.use(session({
   saveUninitialized: true,
 }))
 
-
+//TODO:: middleware to check if user is logged in - don't delete
 // app.use('/user', async(req, res, next) => {
 //   console.log('req.session', req.session);
 //   if (req?.session?.email) {
