@@ -13,6 +13,7 @@ const Tab = createBottomTabNavigator();
 
 export const weeklyActivitiesContext = React.createContext();
 export const GroupContext = React.createContext();
+export const UserContext = React.createContext();
 
 const screenNameToIconName = {
   HomeStack: 'home',
@@ -60,14 +61,17 @@ export default function App() {
   const [weeklyActivities, setWeeklyActivity] = React.useState([
     'Weekly steps',
   ]);
+  const [user, setUser] = React.useState(undefined);
   const addWeeklyActivity = activity =>
     setWeeklyActivity([...weeklyActivities, activity]);
   return (
-    <GroupContext.Provider value={{group}}>
-      <weeklyActivitiesContext.Provider
-        value={{weeklyActivities, addWeeklyActivity}}>
-        <AppComponent />
-      </weeklyActivitiesContext.Provider>
-    </GroupContext.Provider>
+    <UserContext.Provider value={{user, setUser}}>
+      <GroupContext.Provider value={{group}}>
+        <weeklyActivitiesContext.Provider
+          value={{weeklyActivities, addWeeklyActivity}}>
+          <AppComponent />
+        </weeklyActivitiesContext.Provider>
+      </GroupContext.Provider>
+    </UserContext.Provider>
   );
 }

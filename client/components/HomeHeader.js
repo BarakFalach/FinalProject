@@ -1,22 +1,24 @@
 import React, {useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {helloWorld} from '../api/api';
+import {UserContext} from '../App';
+// import {helloWorld} from '../api/api';
 
 const HomeHeader = () => {
-  const [message, setMessage] = React.useState('Waiting....');
-  useEffect(() => {
-    helloWorld().then(data => {
-      setMessage(data);
-    });
-  }, []);
+  const {user, setUser} = React.useContext(UserContext);
+  // const [message, setMessage] = React.useState('Waiting....');
+  // useEffect(() => {
+  //   helloWorld().then(data => {
+  //     setMessage(data);
+  //   });
+  // }, []);
   return (
     <View style={styles.container}>
       <View style={styles.stepsContainer}>
         <Text style={styles.text}>Today Steps </Text>
-        <Text style={styles.numericText}>987</Text>
+        <Text style={styles.numericText}>{user.count}</Text>
       </View>
       <View>
-        <Text style={styles.welcomeText}>Hello, Barak</Text>
+        <Text style={styles.welcomeText}>{`welcome ${user.name}`}</Text>
       </View>
     </View>
   );
