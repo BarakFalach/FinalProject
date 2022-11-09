@@ -15,7 +15,7 @@ app.use(bodyParser.json({ extended: false }));
 const port = process.env.PORT || 3000;
 
 app.use(session({
-  secret: 'keyboard cat',
+  secret: 'keyboard cat', //TODO:: add to .env
   resave: false,
   saveUninitialized: true,
 }))
