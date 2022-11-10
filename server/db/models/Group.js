@@ -4,6 +4,12 @@ const GroupSchema = new mongoose.Schema({
   groupName: {
     type: String,
     required: true,
+    unique: true,
+  },
+  groupCode: {
+    type: String,
+    required: true,
+    unique: true,
   },
   groupDescription: {
     type: String,
