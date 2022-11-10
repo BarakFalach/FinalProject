@@ -4,6 +4,16 @@ const GroupSchema = new mongoose.Schema({
   groupName: {
     type: String,
     required: true,
+    unique: true,
+  },
+  groupCode: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  dateCreated: {
+    type: Date,
+    default: Date.now,
   },
   groupDescription: {
     type: String,

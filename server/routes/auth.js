@@ -40,7 +40,7 @@ const getUserInfo = async (userLoginTicket) => {
   return { name, email, picture };
 };
 
-const stepCounter = async (TOKEN) => {
+const getTodayStepCount = async (TOKEN) => {
   const result = await axios({
     method: 'POST',
     headers: {
@@ -51,9 +51,9 @@ const stepCounter = async (TOKEN) => {
     data: {
       aggregateBy: [
         {
-          dataTypeName: 'com.google.step_count',
+          dataTypeName: 'com.google.step_score',
           dataSourceId:
-            'derived:com.google.step_count.delta:com.google.android.gms:estimated_steps',
+            'derived:com.google.step_score.delta:com.google.android.gms:estimated_steps',
         },
       ],
       bucketByTime: { durationMillis: 86400000 },
@@ -67,7 +67,7 @@ const stepCounter = async (TOKEN) => {
 const updateUserData = async (email, userData) => {
   const user = await User.findOne({ email });
   if (user) {
-    user.count = userData.count;
+    user.score = userData.score;
     user.save();
   } else {
     const newUser = new User(userData);
@@ -78,9 +78,9 @@ const updateUserData = async (email, userData) => {
 const getUserRelevantData = async (loginTicket, code) => {
   const { name, email, picture } = await getUserInfo(loginTicket);
   const { access_token, refresh_token } = await getTokensFromCode(code);
-  const count = await stepCounter(access_token);
-  console.log('count', count);
-  return { name, email, picture, count, access_token, refresh_token };
+  const score = await getTodayStepCount(access_token);
+  console.log('score', score);
+  return { name, email, picture, score, access_token, refresh_token };
 
 }
 
