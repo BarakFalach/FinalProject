@@ -1,11 +1,9 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-const axios = require('axios');
 const connectDb = require('./db/db');
 const User = require('./db/models/User');
 const bodyParser = require('body-parser');
-const { application } = require('express');
 
 connectDb();
 app.use(bodyParser.json({ extended: false }));

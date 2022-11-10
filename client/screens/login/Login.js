@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -7,50 +7,53 @@ import {
 import {View} from 'react-native';
 import axios from 'axios';
 import {Button} from '@rneui/themed';
+import {UserContext} from '../../App';
+// import {NO_USER} from '../../../constants/status';
 
 const webClientId =
   '268322603163-mh7i98imn3m5s949bdqa1pi5bt6kmbmq.apps.googleusercontent.com';
 
+const NO_USER = 'NO_USER';
+
 const url = 'http://10.0.2.2:3000/';
+GoogleSignin.configure({
+  webClientId,
+  offlineAccess: true,
+  forceCodeForRefreshToken: true,
+  scopes: ['https://www.googleapis.com/auth/fitness.activity.read'],
+});
 
 function LoginScreen({navigation}) {
-  const [user, setUser] = useState(undefined);
-  const [authenticated, setAuthenticated] = useState(false);
+  const {user, setUser} = React.useContext(UserContext);
   useEffect(() => {
-    GoogleSignin.configure({
-      webClientId,
-      offlineAccess: true,
-      forceCodeForRefreshToken: true,
-      scopes: ['https://www.googleapis.com/auth/fitness.activity.read'],
+    axios.get(`${url}user`).then(res => {
+      if (res.data === NO_USER) {
+        console.log('no user');
+        return;
+      }
+      setUser(res.data);
     });
+  }, [setUser]);
+
+  const navigateToHomePage = useCallback(() => {
+    navigation.navigate('Home');
   }, []);
 
-  const navigateToHomePage = () => {
-    navigation.navigate('Home');
-  };
-
-  const authClient = async () => {
+  const authClient = async userAuthData => {
     const data = JSON.stringify({
-      id_token: user.idToken,
+      id_token: userAuthData.idToken,
     });
     const headers = {
       'content-type': 'application/json',
-      idToken: user.idToken,
-      code: user.serverAuthCode,
+      idToken: userAuthData.idToken,
+      code: userAuthData.serverAuthCode,
     };
 
     await axios
       .post(`${url}auth`, data, {
         headers,
       })
-      .then(() => setAuthenticated(true))
-      .catch(err => console.log(err));
-  };
-
-  const getName = async () => {
-    await axios
-      .get(`${url}user`)
-      .then(res => setUser(res.data))
+      .then(userData => setUser(userData.data))
       .catch(err => console.log(err));
   };
 
@@ -59,9 +62,7 @@ function LoginScreen({navigation}) {
       console.log('Stsrt sign in');
       await GoogleSignin.hasPlayServices();
       console.log('hasPlayServices');
-      const userInfo = await GoogleSignin.signIn();
-      setUser(userInfo);
-      console.log(userInfo);
+      GoogleSignin.signIn().then(userAuthData => authClient(userAuthData));
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log('User Cancelled the Login Flow');
@@ -88,6 +89,12 @@ function LoginScreen({navigation}) {
     }
   };
 
+  useEffect(() => {
+    if (user?.email) {
+      navigateToHomePage();
+    }
+  }, [user, navigateToHomePage]);
+
   return (
     <View>
       <GoogleSigninButton
@@ -96,9 +103,6 @@ function LoginScreen({navigation}) {
         onPress={signIn}
       />
       <Button onPress={signOut}>Sign Out</Button>
-      <Button onPress={authClient}>Auth Server</Button>
-      {authenticated && <Button onPress={getName}>Get Name</Button>}
-      {user?.name && <Button onPress={navigateToHomePage}>{user?.name}</Button>}
     </View>
   );
 }
