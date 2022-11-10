@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: false
   },
-  count: {
+  score: {
     type: String | Number,
     required: false
   },

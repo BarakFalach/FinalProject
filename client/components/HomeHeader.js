@@ -15,7 +15,7 @@ const HomeHeader = () => {
     <View style={styles.container}>
       <View style={styles.stepsContainer}>
         <Text style={styles.text}>Today Steps </Text>
-        <Text style={styles.numericText}>{user.count}</Text>
+        <Text style={styles.numericText}>{user.score}</Text>
       </View>
       <View>
         <Text style={styles.welcomeText}>{`welcome ${user.name}`}</Text>

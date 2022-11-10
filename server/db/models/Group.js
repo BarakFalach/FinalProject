@@ -11,6 +11,10 @@ const GroupSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  dateCreated: {
+    type: Date,
+    default: Date.now,
+  },
   groupDescription: {
     type: String,
     required: false,
