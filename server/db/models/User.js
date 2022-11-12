@@ -23,7 +23,11 @@ const UserSchema = new mongoose.Schema({
     required: false
   },
   score: {
-    type: String | Number,
+    type: String,
+    required: false
+  },
+  groupCode: {
+    type: String,
     required: false
   },
 });

@@ -1,14 +1,10 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const app = express();
-const axios = require('axios');
 require('dotenv').config();
 const connectDb = require('./db/db');
-const User = require('./db/models/User');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 
-const NO_USER = "NO_USER";
 connectDb();
 app.use(bodyParser.json({ extended: false }));
 
@@ -35,6 +31,7 @@ app.use(session({
 
 app.use("/user", require("./routes/user"));
 app.use("/auth", require("./routes/auth"));
+app.use("/group", require("./routes/group"));
 
 
 app.listen(port, () => console.log(`auth route listening on port ${port}!`));
