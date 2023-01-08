@@ -54,10 +54,11 @@ function AppComponent() {
 }
 
 export default function App() {
-  const group = {
-    name: 'Class of 2023',
-    users: mockUsers(25).reverse(),
-  };
+  // const group = {
+  //   name: 'Class of 2023',
+  //   users: mockUsers(25).reverse(),
+  // };
+  const [group, setGroup] = React.useState({});
   const [weeklyActivities, setWeeklyActivity] = React.useState([
     'Weekly steps',
   ]);
@@ -66,7 +67,7 @@ export default function App() {
     setWeeklyActivity([...weeklyActivities, activity]);
   return (
     <UserContext.Provider value={{user, setUser}}>
-      <GroupContext.Provider value={{group}}>
+      <GroupContext.Provider value={{group, setGroup}}>
         <weeklyActivitiesContext.Provider
           value={{weeklyActivities, addWeeklyActivity}}>
           <AppComponent />

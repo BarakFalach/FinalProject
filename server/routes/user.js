@@ -8,6 +8,7 @@ router.get('/', (req, res) => {
   User.findOne({ email: req.session.email }).then((user) => res.json(user));
 });
 
+//add user
 router.post('/', (req, res) => {
   const { email } = req.body;
   const newUser = new User({ email });
@@ -16,7 +17,9 @@ router.post('/', (req, res) => {
   res.send('user Added');
 });
 
-router.put('/', async (req, res) => {
+
+// manually add a score to a user
+router.put('/score', async (req, res) => {
   const { email, name, picture, score, groupCode } = req.body;
   console.log('req.body', req.body);
   await User.findOneAndUpdate(
@@ -26,14 +29,17 @@ router.put('/', async (req, res) => {
   res.send('user updated');
 });
 
+//get all users
 router.get('/all', (req, res) => {
   User.find().then((users) => res.json(users));
 });
 
+//delete all users
 router.delete('/all', (req, res) => {
   User.deleteMany({}).then(() => res.send('deleted'));
 });
 
+//add user to group
 router.post('/addGroup', async (req, res) => {
   const { groupCode, email } = req.body;
   try {
@@ -43,8 +49,13 @@ router.post('/addGroup', async (req, res) => {
     { groupCode },
     { $push: { groupMembers: email } }, 
   );
+  const group = await Group.findOne({ groupCode });
   console.log('user added to group');
-  res.send('group added');
+  res.send({
+    groupName: group.groupName,
+    groupCode: group.groupCode,
+    groupMembers: group.groupMembers,
+  });
   } catch (err) {
     res.status(500).send("db error");
   }

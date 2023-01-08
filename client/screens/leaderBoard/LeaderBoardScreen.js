@@ -1,5 +1,4 @@
 import React from 'react';
-import {Text, View} from 'react-native';
 import TableContainer from '../../components/LeaderBoard/TableContainer';
 import {screenStyle} from '../home/Home';
 import {ThemeProvider} from '@rneui/themed';
