@@ -8,7 +8,6 @@ import {View} from 'react-native';
 import axios from 'axios';
 import {Button} from '@rneui/themed';
 import {UserContext} from '../../App';
-// import {NO_USER} from '../../../constants/status';
 
 const webClientId =
   '268322603163-mh7i98imn3m5s949bdqa1pi5bt6kmbmq.apps.googleusercontent.com';
@@ -31,12 +30,13 @@ function LoginScreen({navigation}) {
         console.log('no user');
         return;
       }
+      console.log('res.data', res.data);
       setUser(res.data);
     });
   }, [setUser]);
 
   const navigateToHomePage = useCallback(() => {
-    navigation.navigate('Home');
+    navigation.navigate('Join Group');
   }, []);
 
   const authClient = async userAuthData => {

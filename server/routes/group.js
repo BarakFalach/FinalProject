@@ -14,14 +14,15 @@ router.get('/', (req, res) => {
   });
 });
 
-//getSingle group
-router.get('/code/:groupCode', (req, res) => {
+//getSingle group 
+// TODO:: with aggregate of group members scores
+router.get('/code/:groupCode', async (req, res) => {
   console.log('req.params', req.params);
-  Group.findOne({ groupCode: req.params.groupCode }, (err, group) => {
+  Group.findOne({ groupCode: req.params.groupCode }, async (err, group) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      res.json(group);
+      res.json({ groupAttributes: group, leaderBoard: await getGroupLeaderBoard(group) });
     }
   });
 });
@@ -68,7 +69,6 @@ const getUser = async (user) => {
 
 const getGroupLeaderBoard = async (group) => {
   const groupMembers = group.groupMembers;
-  console.log('groupMembers', groupMembers);
   const membersAggregate = groupMembers.map(async (member) => {
     const { name, score } = await getUser(member);
     return { name, score };

@@ -12,7 +12,7 @@ const GroupItemFooter = props => {
   return (
     <View style={groupItemFooterStyles.container}>
       <GroupIconItem iconSource={icons.score} value={props.user.score} />
-      <GroupIconItem iconSource={icons.podium} value={`1st`} />
+      <GroupIconItem iconSource={icons.podium} value={'1st'} />
       <GroupIconItem iconSource={icons.group} value={props.groupLength} />
     </View>
   );

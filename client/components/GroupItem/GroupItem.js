@@ -1,14 +1,15 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {GroupContext} from '../../App';
+import {useGroup} from '../../hooks/useGroup';
 import GroupItemFooter from './GroupItemFooter';
 
-const GroupItem = () => {
-  const {group} = React.useContext(GroupContext);
+const GroupCard = ({group}) => {
+  console.log('groupCard', group.groupMembers);
   return (
-    <View style={styles.container}>
+    <>
       <View style={{flex: 2, paddingTop: 5}}>
-        <Text style={styles.headerText}>{group.name}</Text>
+        <Text style={styles.headerText}>{group.groupName}</Text>
       </View>
       <View style={{flex: 5}}>
         <Image
@@ -17,11 +18,24 @@ const GroupItem = () => {
         />
       </View>
       <View style={styles.iconContainer}>
-        <GroupItemFooter
-          groupLength={group.users.length}
-          user={group.users[0]}
-        />
+        {group?.groupMembers ? (
+          <GroupItemFooter
+            groupLength={group?.groupMembers?.length}
+            user={group.groupMembers[0]}
+          />
+        ) : null}
       </View>
+    </>
+  );
+};
+
+const GroupItem = () => {
+  useGroup();
+  const {group} = React.useContext(GroupContext);
+  console.log('groupItem', group);
+  return (
+    <View style={styles.container}>
+      <GroupCard group={group} />
     </View>
   );
 };

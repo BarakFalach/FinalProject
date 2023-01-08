@@ -1,11 +1,12 @@
 import React from 'react';
 import {Text, View, StyleSheet, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import {GroupContext} from '../../App';
+import {GroupContext, UserContext} from '../../App';
 import {LineItem} from './LineItem';
 
 function TableContainer(props) {
   const {group} = React.useContext(GroupContext);
+  const {user} = React.useContext(UserContext);
   return (
     <View style={{flex: 1}}>
       <View style={styles.topBar}>
@@ -22,8 +23,8 @@ function TableContainer(props) {
         <View />
       </View>
       <ScrollView style={styles.listContainer}>
-        {group.users.map((user, index) => (
-          <LineItem key={user.id} user={user} place={index} />
+        {group?.leaderBoard?.map((currentUser, index) => (
+          <LineItem key={currentUser.name} user={currentUser} place={index} />
         ))}
       </ScrollView>
     </View>
