@@ -1,6 +1,5 @@
-import {Input} from '@rneui/base';
 import React, {useEffect} from 'react';
-import {View, StyleSheet, Button} from 'react-native';
+import {View, StyleSheet, Button, Input} from 'react-native';
 import {useJoinGroup} from '../../api/useJoinGroup';
 import {GroupContext} from '../../App';
 
@@ -16,8 +15,8 @@ const JoinGroupScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={{width: 200}}>
-        <Input onChangeText={setGroupCode} placeholder="group code" />
-        <Button onPress={() => joinGroup(groupCode)} title="Join" />
+        {/* <Input onChangeText={setGroupCode} placeholder="group code" /> */}
+        {/* <Button onPress={() => joinGroup(groupCode)} title="Join" /> */}
       </View>
     </View>
   );

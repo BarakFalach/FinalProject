@@ -54,10 +54,6 @@ function AppComponent() {
 }
 
 export default function App() {
-  // const group = {
-  //   name: 'Class of 2023',
-  //   users: mockUsers(25).reverse(),
-  // };
   const [group, setGroup] = React.useState({});
   const [weeklyActivities, setWeeklyActivity] = React.useState([
     'Weekly steps',

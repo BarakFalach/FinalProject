@@ -1,12 +1,11 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {View} from 'react-native';
+import {View, Button} from 'react-native';
 import axios from 'axios';
-import {Button} from '@rneui/themed';
 import {UserContext} from '../../App';
 
 const webClientId =
@@ -102,7 +101,7 @@ function LoginScreen({navigation}) {
         color={GoogleSigninButton.Color.Light}
         onPress={signIn}
       />
-      <Button onPress={signOut}>Sign Out</Button>
+      <Button title="Sign Out" onPress={signOut} />
     </View>
   );
 }
