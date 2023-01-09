@@ -1,6 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {Button, ThemeProvider} from '@rneui/themed';
+import {StyleSheet, View, Button} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import HomeHeader from '../../components/HomeHeader';
@@ -15,44 +14,42 @@ function HomeScreen({navigation}) {
   };
 
   return (
-    <ThemeProvider>
-      <LinearGradient
-        colors={['#57CC99', '#22577A']}
-        style={screenStyle.container}>
-        <HomeHeader />
-        <View style={{flex: 0.7}}>
-          <View style={screenStyle.body}>
-            <GroupItem />
-          </View>
+    <LinearGradient
+      colors={['#57CC99', '#22577A']}
+      style={screenStyle.container}>
+      <HomeHeader />
+      <View style={{flex: 0.7}}>
+        <View style={screenStyle.body}>
+          <GroupItem />
         </View>
+      </View>
+      <View
+        style={{
+          flex: 0.2,
+          justifyContent: 'flex-end',
+          alignItems: 'flex-end',
+        }}>
         <View
           style={{
-            flex: 0.2,
-            justifyContent: 'flex-end',
-            alignItems: 'flex-end',
+            flex: 0.5,
+            width: 160,
+            paddingRight: 15,
+            paddingBottom: 15,
           }}>
-          <View
-            style={{
-              flex: 0.5,
-              width: 160,
-              paddingRight: 15,
-              paddingBottom: 15,
-            }}>
-            <Button
-              onPress={AddActivityNavigation}
-              titleStyle={{fontWeight: 'bold', fontSize: 17}}
-              buttonStyle={{
-                backgroundColor: '#57CC99',
-                justifyContent: 'space-around',
-              }}
-              radius={14}>
-              <Icon name="plus" color="white" />
-              Add Activity
-            </Button>
-          </View>
+          <Button
+            title="Add Activity"
+            onPress={AddActivityNavigation}
+            titleStyle={{fontWeight: 'bold', fontSize: 17}}
+            buttonStyle={{
+              backgroundColor: '#57CC99',
+              justifyContent: 'space-around',
+            }}
+            radius={14}>
+            <Icon name="plus" color="white" />
+          </Button>
         </View>
-      </LinearGradient>
-    </ThemeProvider>
+      </View>
+    </LinearGradient>
   );
 }
 

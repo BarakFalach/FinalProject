@@ -1,6 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
-import {ListItem, Avatar} from '@rneui/themed';
+import {Text, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TouchableScale from 'react-native-touchable-scale';
@@ -8,7 +7,8 @@ import TouchableScale from 'react-native-touchable-scale';
 const ActivityItem = props => {
   return (
     <View style={{padding: 10}}>
-      <ListItem
+      <Text>ActivityItem</Text>
+      {/* <ListItem
         Component={TouchableScale}
         style={{borderRadius: 10}}
         friction={90}
@@ -30,7 +30,7 @@ const ActivityItem = props => {
           </ListItem.Subtitle>
         </ListItem.Content>
         <Icon name="chevron-right" color="white" />
-      </ListItem>
+      </ListItem> */}
     </View>
   );
 };

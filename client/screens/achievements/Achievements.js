@@ -1,6 +1,5 @@
 import React, {useMemo} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {Text, Image} from '@rneui/themed';
+import {View, StyleSheet, Text, Image} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import TouchableScale from 'react-native-touchable-scale';
 import {weeklyActivitiesContext} from '../../App';
