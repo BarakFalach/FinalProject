@@ -6,12 +6,11 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import WeekView from './screens/weekView/WeekView';
 import HomeStackScreen from './screens/home/HomeStackNavigator';
 import LeaderBoardScreen from './screens/leaderBoard/LeaderBoardScreen';
-import AchievementsScreen from './screens/achievements/Achievements';
-import {mockUsers} from './utils/mockData';
+// import AchievementsScreen from './screens/achievements/Achievements';
 
 const Tab = createBottomTabNavigator();
 
-export const weeklyActivitiesContext = React.createContext();
+export const WeeklyActivitiesContext = React.createContext();
 export const GroupContext = React.createContext();
 export const UserContext = React.createContext();
 
@@ -46,7 +45,7 @@ function AppComponent() {
           <Tab.Screen name="HomeStack" component={HomeStackScreen} />
           <Tab.Screen name="Week" component={WeekView} />
           <Tab.Screen name="LeaderBoard" component={LeaderBoardScreen} />
-          <Tab.Screen name="Achievements" component={AchievementsScreen} />
+          {/* <Tab.Screen name="Achievements" component={AchievementsScreen} /> */}
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
@@ -54,7 +53,7 @@ function AppComponent() {
 }
 
 export default function App() {
-  const [group, setGroup] = React.useState({});
+  const [group, setGroup] = React.useState(undefined);
   const [weeklyActivities, setWeeklyActivity] = React.useState([
     'Weekly steps',
   ]);
@@ -64,10 +63,10 @@ export default function App() {
   return (
     <UserContext.Provider value={{user, setUser}}>
       <GroupContext.Provider value={{group, setGroup}}>
-        <weeklyActivitiesContext.Provider
+        <WeeklyActivitiesContext.Provider
           value={{weeklyActivities, addWeeklyActivity}}>
           <AppComponent />
-        </weeklyActivitiesContext.Provider>
+        </WeeklyActivitiesContext.Provider>
       </GroupContext.Provider>
     </UserContext.Provider>
   );

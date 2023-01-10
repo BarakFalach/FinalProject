@@ -2,7 +2,7 @@ import React, {useMemo} from 'react';
 import {View, StyleSheet, Text, Image} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import TouchableScale from 'react-native-touchable-scale';
-import {weeklyActivitiesContext} from '../../App';
+import {WeeklyActivitiesContext} from '../../App';
 import {mockAchievements} from '../../utils/mockData';
 
 export const ActivityIcons = {
@@ -25,7 +25,7 @@ const AchievementItem = props => {
 };
 
 const AchievementsScreen = ({route, navigation}) => {
-  const {addWeeklyActivity} = React.useContext(weeklyActivitiesContext);
+  const {addWeeklyActivity} = React.useContext(WeeklyActivitiesContext);
   const onClick = activityName => {
     addWeeklyActivity(activityName);
     navigation.navigate('Home', {

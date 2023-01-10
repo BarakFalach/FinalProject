@@ -30,9 +30,11 @@ const GroupCard = ({group}) => {
 };
 
 const GroupItem = () => {
-  useGroup();
-  const {group} = React.useContext(GroupContext);
+  const {group} = useGroup();
   console.log('groupItem', group);
+  if (!group) {
+    return <Text>ds</Text>;
+  }
   return (
     <View style={styles.container}>
       <GroupCard group={group} />

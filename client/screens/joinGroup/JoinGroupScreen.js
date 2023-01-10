@@ -1,20 +1,26 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, Button, Input} from 'react-native';
+import {View, StyleSheet, Button, Input, Text} from 'react-native';
 import {useJoinGroup} from '../../api/useJoinGroup';
-import {GroupContext} from '../../App';
+import {useGroup} from '../../hooks/useGroup';
+import {useUser} from '../../hooks/useUser';
 
 const JoinGroupScreen = ({navigation}) => {
-  const {group} = React.useContext(GroupContext);
-  const [groupCode, setGroupCode] = React.useState('');
+  const {group} = useGroup();
+  const {user, setUser} = useUser();
   const {joinGroup} = useJoinGroup();
   useEffect(() => {
     if (group) {
       navigation.navigate('Home');
     }
   }, [group, navigation]);
+
+  if (user.groupCode) {
+    return <Text>Loading</Text>;
+  }
   return (
     <View style={styles.container}>
       <View style={{width: 200}}>
+        <Text>jon</Text>
         {/* <Input onChangeText={setGroupCode} placeholder="group code" /> */}
         {/* <Button onPress={() => joinGroup(groupCode)} title="Join" /> */}
       </View>
