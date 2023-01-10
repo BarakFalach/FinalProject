@@ -1,11 +1,11 @@
 import React from 'react';
 import {View} from 'react-native';
 import ActivityItem from '../../components/WeekView/ActivityItem';
-import {weeklyActivitiesContext} from '../../App';
+import {WeeklyActivitiesContext} from '../../App';
 import {ActivityIcons} from '../addActivity/AddActivity';
 
 const WeekView = () => {
-  const {weeklyActivities} = React.useContext(weeklyActivitiesContext);
+  const {weeklyActivities} = React.useContext(WeeklyActivitiesContext);
 
   return (
     <View>

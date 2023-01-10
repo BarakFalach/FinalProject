@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet, Text, Image} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import TouchableScale from 'react-native-touchable-scale';
-import {weeklyActivitiesContext} from '../../App';
+import {WeeklyActivitiesContext} from '../../App';
 
 export const ActivityIcons = {
   cycling: require('../../assets/cycling.png'),
@@ -24,7 +24,7 @@ const ActivityRow = props => {
 };
 
 const AddActivity = ({route, navigation}) => {
-  const {addWeeklyActivity} = React.useContext(weeklyActivitiesContext);
+  const {addWeeklyActivity} = React.useContext(WeeklyActivitiesContext);
   const onClick = activityName => {
     addWeeklyActivity(activityName);
     navigation.navigate('Home', {
