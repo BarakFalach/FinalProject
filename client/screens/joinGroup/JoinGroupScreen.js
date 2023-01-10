@@ -5,7 +5,7 @@ import {useGroup} from '../../hooks/useGroup';
 import {useUser} from '../../hooks/useUser';
 
 const JoinGroupScreen = ({navigation}) => {
-  const {group} = useGroup();
+  const {group, setGroupCode} = useGroup();
   const {user, setUser} = useUser();
   const {joinGroup} = useJoinGroup();
   useEffect(() => {
@@ -14,14 +14,14 @@ const JoinGroupScreen = ({navigation}) => {
     }
   }, [group, navigation]);
 
-  if (user.groupCode) {
+  if (user?.groupCode) {
     return <Text>Loading</Text>;
   }
   return (
     <View style={styles.container}>
       <View style={{width: 200}}>
         <Text>jon</Text>
-        {/* <Input onChangeText={setGroupCode} placeholder="group code" /> */}
+        <Input onChangeText={setGroupCode} placeholder="group code" />
         {/* <Button onPress={() => joinGroup(groupCode)} title="Join" /> */}
       </View>
     </View>
