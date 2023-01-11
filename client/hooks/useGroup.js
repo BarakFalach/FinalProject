@@ -5,7 +5,6 @@ import {GroupContext, UserContext} from '../App';
 export const useGroup = () => {
   const {group, setGroup} = useContext(GroupContext);
   const {user} = useContext(UserContext);
-  console.log('userGroup', user.groupCode);
   useEffect(() => {
     if (!group && user.groupCode) {
       console.log('useGroup', user.groupCode);

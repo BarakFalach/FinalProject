@@ -1,13 +1,16 @@
-import React, {useEffect} from 'react';
-import {View, StyleSheet, Button, Input, Text} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, StyleSheet, Text} from 'react-native';
 import {useJoinGroup} from '../../api/useJoinGroup';
 import {useGroup} from '../../hooks/useGroup';
 import {useUser} from '../../hooks/useUser';
+import {Input, VStack, Button} from 'native-base';
+import {Colors} from '../../utils/constants';
 
 const JoinGroupScreen = ({navigation}) => {
-  const {group, setGroupCode} = useGroup();
-  const {user, setUser} = useUser();
-  const {joinGroup} = useJoinGroup();
+  const {group} = useGroup();
+  const [groupInputCode, setGroupCode] = useState('');
+  const {user} = useUser();
+  const {joinGroup, isLoading} = useJoinGroup();
   useEffect(() => {
     if (group) {
       navigation.navigate('Home');
@@ -19,11 +22,42 @@ const JoinGroupScreen = ({navigation}) => {
   }
   return (
     <View style={styles.container}>
-      <View style={{width: 200}}>
-        <Text>jon</Text>
-        <Input onChangeText={setGroupCode} placeholder="group code" />
-        {/* <Button onPress={() => joinGroup(groupCode)} title="Join" /> */}
-      </View>
+      <VStack space={4} alignItems="center" width={'250px'}>
+        <Input
+          variant="underlined"
+          onChangeText={setGroupCode}
+          placeholder="group code"
+          type="number"
+          maxLength={4}
+          keyboardType="number-pad"
+          _text={{
+            fontSize: '24px',
+          }}
+          _focus={{
+            borderColor: Colors.primary,
+            _text: {bg: Colors.secondary},
+          }}
+        />
+        <Button
+          bg={Colors.secondary}
+          isLoading={isLoading}
+          _loading={{
+            bg: Colors.primary,
+            opacity: '0.8',
+          }}
+          _text={{fontWeight: 'bold'}}
+          width="100%"
+          _hover={{
+            bg: Colors.primary,
+          }}
+          _pressed={{
+            bg: Colors.primary,
+            opacity: '0.8',
+          }}
+          onPress={() => joinGroup(groupInputCode)}>
+          Join Group
+        </Button>
+      </VStack>
     </View>
   );
 };
@@ -33,7 +67,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F1FAEE',
     borderRadius: 10,
   },
   headerText: {
