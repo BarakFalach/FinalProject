@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../db/models/User');
 const Group = require('../db/models/Group');
+const { getGroupLeaderBoard } = require('./group');
 const router = express.Router();
 
 //get a user from db
@@ -39,22 +40,31 @@ router.delete('/all', (req, res) => {
   User.deleteMany({}).then(() => res.send('deleted'));
 });
 
+//delete group code
+router.put('/deleteGroup', async (req, res) => {
+  const { email } = req.body;
+  await User.findOneAndUpdate({ email },{ groupCode: null });
+  res.send('group has been deleted');
+})
+
 //add user to group
 router.post('/addGroup', async (req, res) => {
-  const { groupCode, email } = req.body;
+  const { groupCode } = req.body;
+  const { email } = req?.session || req.body;
   try {
-  console.log('req.body', req.body);
+  console.log('req.body, addGroup', req.body);
   await User.findOneAndUpdate({ email: req?.session?.email || email }, { groupCode });
-  await Group.findOneAndUpdate(
-    { groupCode },
-    { $push: { groupMembers: email } }, 
-  );
+  console.log('after user')
   const group = await Group.findOne({ groupCode });
-  console.log('user added to group');
+
+  await group.updateOne(
+    { $push: { groupMembers: email }}
+  );
+  console.log('user added to group', group);
   res.send({
     groupName: group.groupName,
     groupCode: group.groupCode,
-    groupMembers: group.groupMembers,
+    groupMembers: [...group.groupMembers, email],
   });
   } catch (err) {
     res.status(500).send("db error");

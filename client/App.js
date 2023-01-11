@@ -6,6 +6,8 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import WeekView from './screens/weekView/WeekView';
 import HomeStackScreen from './screens/home/HomeStackNavigator';
 import LeaderBoardScreen from './screens/leaderBoard/LeaderBoardScreen';
+import {NativeBaseProvider} from 'native-base';
+
 // import AchievementsScreen from './screens/achievements/Achievements';
 
 const Tab = createBottomTabNavigator();
@@ -61,13 +63,15 @@ export default function App() {
   const addWeeklyActivity = activity =>
     setWeeklyActivity([...weeklyActivities, activity]);
   return (
-    <UserContext.Provider value={{user, setUser}}>
-      <GroupContext.Provider value={{group, setGroup}}>
-        <WeeklyActivitiesContext.Provider
-          value={{weeklyActivities, addWeeklyActivity}}>
-          <AppComponent />
-        </WeeklyActivitiesContext.Provider>
-      </GroupContext.Provider>
-    </UserContext.Provider>
+    <NativeBaseProvider>
+      <UserContext.Provider value={{user, setUser}}>
+        <GroupContext.Provider value={{group, setGroup}}>
+          <WeeklyActivitiesContext.Provider
+            value={{weeklyActivities, addWeeklyActivity}}>
+            <AppComponent />
+          </WeeklyActivitiesContext.Provider>
+        </GroupContext.Provider>
+      </UserContext.Provider>
+    </NativeBaseProvider>
   );
 }

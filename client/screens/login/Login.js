@@ -7,6 +7,7 @@ import {
 import {View, Button} from 'react-native';
 import axios from 'axios';
 import {UserContext} from '../../App';
+import {Colors} from '../../utils/constants';
 
 const webClientId =
   '268322603163-mh7i98imn3m5s949bdqa1pi5bt6kmbmq.apps.googleusercontent.com';
@@ -95,13 +96,19 @@ function LoginScreen({navigation}) {
   }, [user, navigateToHomePage]);
 
   return (
-    <View>
+    <View
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+        backgroundColor: Colors.secondary,
+      }}>
       <GoogleSigninButton
         size={GoogleSigninButton.Size.Wide}
         color={GoogleSigninButton.Color.Light}
         onPress={signIn}
       />
-      <Button title="Sign Out" onPress={signOut} />
+      {/* <Button title="Sign Out" onPress={signOut} /> */}
     </View>
   );
 }

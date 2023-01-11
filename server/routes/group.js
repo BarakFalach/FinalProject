@@ -63,13 +63,23 @@ router.get('/leaderBoard/:name', async (req, res) => {
   res.json(leaderBoard);
 });
 
+router.delete('', async (req, res) => {
+  await Group.deleteMany({});
+  res.send('deleted');
+})
+
+router.get('/deleteMembers/:name', async (req, res) => {
+  const group = await Group.findOneAndUpdate({ groupName: req.params.name }, { groupMembers: [] });
+  res.send('deleted');
+})
+
 const getUser = async (user) => {
   return await User.findOne({ email: user });
 };
 
 const getGroupLeaderBoard = async (group) => {
   const groupMembers = group.groupMembers;
-  const membersAggregate = groupMembers.map(async (member) => {
+  const membersAggregate = groupMembers?.map(async (member) => {
     const { name, score } = await getUser(member);
     return { name, score };
   });

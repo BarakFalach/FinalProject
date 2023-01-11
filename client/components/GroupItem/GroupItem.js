@@ -4,10 +4,14 @@ import {GroupContext} from '../../App';
 import {useGroup} from '../../hooks/useGroup';
 import GroupItemFooter from './GroupItemFooter';
 
-const GroupCard = ({group}) => {
-  console.log('groupCard', group.groupMembers);
+const GroupItem = () => {
+  const {group} = useGroup();
+  console.log('groupItem', group);
+  if (!group) {
+    return <Text>Loading</Text>;
+  }
   return (
-    <>
+    <View style={styles.container}>
       <View style={{flex: 2, paddingTop: 5}}>
         <Text style={styles.headerText}>{group.groupName}</Text>
       </View>
@@ -18,26 +22,8 @@ const GroupCard = ({group}) => {
         />
       </View>
       <View style={styles.iconContainer}>
-        {group?.groupMembers ? (
-          <GroupItemFooter
-            groupLength={group?.groupMembers?.length}
-            user={group.groupMembers[0]}
-          />
-        ) : null}
+        {group?.groupMembers ? <GroupItemFooter /> : null}
       </View>
-    </>
-  );
-};
-
-const GroupItem = () => {
-  const {group} = useGroup();
-  console.log('groupItem', group);
-  if (!group) {
-    return <Text>ds</Text>;
-  }
-  return (
-    <View style={styles.container}>
-      <GroupCard group={group} />
     </View>
   );
 };

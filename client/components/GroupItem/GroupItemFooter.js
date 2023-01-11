@@ -1,5 +1,8 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import {GroupContext} from '../../App';
+import {useGroup} from '../../hooks/useGroup';
+import {useUser} from '../../hooks/useUser';
 import GroupIconItem from './GroupIconItem';
 
 const icons = {
@@ -8,12 +11,17 @@ const icons = {
   group: require('../../assets/group.png'),
 };
 
-const GroupItemFooter = props => {
+const GroupItemFooter = () => {
+  const {user} = useUser();
+  const {group} = React.useContext(GroupContext);
   return (
     <View style={groupItemFooterStyles.container}>
-      <GroupIconItem iconSource={icons.score} value={props.user.score} />
+      <GroupIconItem iconSource={icons.score} value={user?.score} />
       <GroupIconItem iconSource={icons.podium} value={'1st'} />
-      <GroupIconItem iconSource={icons.group} value={props.groupLength} />
+      <GroupIconItem
+        iconSource={icons.group}
+        value={group?.groupMembers?.length}
+      />
     </View>
   );
 };
