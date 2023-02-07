@@ -22,7 +22,6 @@ router.post('/', async (req, res) => {
     const userData = await getUserRelevantData(loginTicket, code);
     req.session.email = userData?.email;
     updateUserData(userData.email, userData);
-    console.log('user logged in', userData);
     res.send(userData);
   } catch (err) {
     console.log(err.message);

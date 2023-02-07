@@ -7,7 +7,6 @@ export const useGroup = () => {
   const {user} = useContext(UserContext);
   useEffect(() => {
     if (!group && user.groupCode) {
-      console.log('useGroup', user.groupCode);
       getGroup(user.groupCode).then(groupData =>
         setGroup({
           ...groupData.groupAttributes,

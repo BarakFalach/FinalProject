@@ -2,10 +2,11 @@ import React from 'react';
 import {Text, View, StyleSheet, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import {GroupContext, UserContext} from '../../App';
+import {useGroup} from '../../hooks/useGroup';
 import {LineItem} from './LineItem';
 
 function TableContainer(props) {
-  const {group} = React.useContext(GroupContext);
+  const {group} = useGroup();
   const {user} = React.useContext(UserContext);
   return (
     <View style={{flex: 1}}>

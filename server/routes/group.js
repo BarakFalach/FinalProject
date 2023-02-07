@@ -3,7 +3,9 @@ const User = require('../db/models/User');
 const Group = require('../db/models/Group');
 const router = express.Router();
 
-//get all groups
+/**
+ * @GET get all groups
+ */
 router.get('/', (req, res) => {
   Group.find({}, (err, groups) => {
     if (err) {
@@ -17,7 +19,6 @@ router.get('/', (req, res) => {
 //getSingle group 
 // TODO:: with aggregate of group members scores
 router.get('/code/:groupCode', async (req, res) => {
-  console.log('req.params', req.params);
   Group.findOne({ groupCode: req.params.groupCode }, async (err, group) => {
     if (err) {
       res.status(500).send(err);

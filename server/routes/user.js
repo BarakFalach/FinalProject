@@ -4,12 +4,16 @@ const Group = require('../db/models/Group');
 const { getGroupLeaderBoard } = require('./group');
 const router = express.Router();
 
-//get a user from db
+/**
+ * @GET get user
+ */
 router.get('/', (req, res) => {
   User.findOne({ email: req.session.email }).then((user) => res.json(user));
 });
 
-//add user
+/**
+ * @POST add user
+ */
 router.post('/', (req, res) => {
   const { email } = req.body;
   const newUser = new User({ email });
@@ -19,10 +23,11 @@ router.post('/', (req, res) => {
 });
 
 
-// manually add a score to a user
+/**
+ * @dev update user score
+ */
 router.put('/score', async (req, res) => {
   const { email, name, picture, score, groupCode } = req.body;
-  console.log('req.body', req.body);
   await User.findOneAndUpdate(
     { email },
     { score },
@@ -30,41 +35,51 @@ router.put('/score', async (req, res) => {
   res.send('user updated');
 });
 
-//get all users
+/**
+ * @dev get all users
+ */
 router.get('/all', (req, res) => {
   User.find().then((users) => res.json(users));
 });
 
-//delete all users
+/**
+ * @dev delete all users
+ */
 router.delete('/all', (req, res) => {
   User.deleteMany({}).then(() => res.send('deleted'));
 });
 
-//delete group code
+/**
+ * @PUT delete group from user
+ */
 router.put('/deleteGroup', async (req, res) => {
   const { email } = req.body;
   await User.findOneAndUpdate({ email },{ groupCode: null });
   res.send('group has been deleted');
 })
 
-//add user to group
+/**
+ * @POST add user to group, and update group filed in user entity
+ */
 router.post('/addGroup', async (req, res) => {
   const { groupCode } = req.body;
   const { email } = req?.session || req.body;
   try {
-  console.log('req.body, addGroup', req.body);
-  await User.findOneAndUpdate({ email: req?.session?.email || email }, { groupCode });
-  console.log('after user')
-  const group = await Group.findOne({ groupCode });
+    const group = await Group.findOne({ groupCode });
+    if (!group) {
+      res.status(400).send('group does not exist');
+      return;
+    }
+  const user = await User.findOneAndUpdate({ email: req?.session?.email || email }, { groupCode });
 
   await group.updateOne(
-    { $push: { groupMembers: email }}
+    { $addToSet: { groupMembers: email }}
   );
-  console.log('user added to group', group);
   res.send({
     groupName: group.groupName,
     groupCode: group.groupCode,
     groupMembers: [...group.groupMembers, email],
+    leaderBoard: [{name: user.name, score: user.score}],
   });
   } catch (err) {
     res.status(500).send("db error");
