@@ -7,7 +7,7 @@ const PORT = '3000';
 const baseUrl = `http://10.0.2.2:${PORT}/user/addGroup`;
 
 export const useJoinGroup = () => {
-  const {group, setGroup} = useContext(GroupContext);
+  const {setGroup} = useContext(GroupContext);
   const {user} = useUser();
   const [isLoading, setIsLoading] = React.useState(false);
 

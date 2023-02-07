@@ -13,6 +13,7 @@ const client = new OAuth2Client(webClientId, clientSecret, url);
 
 router.post('/', async (req, res) => {
   const { idtoken, code } = req.headers;
+  //TODO:: needs to handle case, when there is already user in db, add the group code to the user
   try {
     const loginTicket = await client.verifyIdToken({
       idToken: idtoken,
