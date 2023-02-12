@@ -6,7 +6,6 @@ import GroupItemFooter from './GroupItemFooter';
 
 const GroupItem = () => {
   const {group} = useGroup();
-  console.log('groupItem', group);
   if (!group) {
     return <Text>Loading</Text>;
   }

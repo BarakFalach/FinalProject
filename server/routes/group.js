@@ -1,9 +1,11 @@
 const express = require('express');
-const User = require('../db/models/User');
 const Group = require('../db/models/Group');
+const { getGroupLeaderBoard } = require('../utils/leaderBoard');
 const router = express.Router();
 
-//get all groups
+/**
+ * @GET get all groups
+ */
 router.get('/', (req, res) => {
   Group.find({}, (err, groups) => {
     if (err) {
@@ -17,12 +19,15 @@ router.get('/', (req, res) => {
 //getSingle group 
 // TODO:: with aggregate of group members scores
 router.get('/code/:groupCode', async (req, res) => {
-  console.log('req.params', req.params);
+  console.log('getGroup groupCode:', req.params.groupCode)
   Group.findOne({ groupCode: req.params.groupCode }, async (err, group) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      res.json({ groupAttributes: group, leaderBoard: await getGroupLeaderBoard(group) });
+      res.send({ groupName: group.groupName,
+        groupCode: group.groupCode,
+        groupMembers: group.groupMembers,
+        leaderBoard: await getGroupLeaderBoard(group.groupMembers) });
     }
   });
 });
@@ -59,7 +64,7 @@ router.post('/', (req, res) => {
  */
 router.get('/leaderBoard/:name', async (req, res) => {
   const group = await Group.findOne({ groupName: req.params.name });
-  const leaderBoard = await getGroupLeaderBoard(group);
+  const leaderBoard = await getGroupLeaderBoard(group?.groupMembers);
   res.json(leaderBoard);
 });
 
@@ -69,22 +74,8 @@ router.delete('', async (req, res) => {
 })
 
 router.get('/deleteMembers/:name', async (req, res) => {
-  const group = await Group.findOneAndUpdate({ groupName: req.params.name }, { groupMembers: [] });
+  await Group.findOneAndUpdate({ groupName: req.params.name }, { groupMembers: [] });
   res.send('deleted');
 })
-
-const getUser = async (user) => {
-  return await User.findOne({ email: user });
-};
-
-const getGroupLeaderBoard = async (group) => {
-  const groupMembers = group.groupMembers;
-  const membersAggregate = groupMembers?.map(async (member) => {
-    const { name, score } = await getUser(member);
-    return { name, score };
-  });
-  const membersWithScores = await Promise.all(membersAggregate)
-  return membersWithScores.sort((a, b) => b.score - a.score);
-};
 
 module.exports = router;

@@ -1,15 +1,19 @@
 const express = require('express');
 const User = require('../db/models/User');
 const Group = require('../db/models/Group');
-const { getGroupLeaderBoard } = require('./group');
+const { getGroupLeaderBoard } = require('../utils/leaderBoard');
 const router = express.Router();
 
-//get a user from db
+/**
+ * @GET get user
+ */
 router.get('/', (req, res) => {
   User.findOne({ email: req.session.email }).then((user) => res.json(user));
 });
 
-//add user
+/**
+ * @POST add user
+ */
 router.post('/', (req, res) => {
   const { email } = req.body;
   const newUser = new User({ email });
@@ -19,10 +23,11 @@ router.post('/', (req, res) => {
 });
 
 
-// manually add a score to a user
+/**
+ * @dev update user score
+ */
 router.put('/score', async (req, res) => {
   const { email, name, picture, score, groupCode } = req.body;
-  console.log('req.body', req.body);
   await User.findOneAndUpdate(
     { email },
     { score },
@@ -30,41 +35,64 @@ router.put('/score', async (req, res) => {
   res.send('user updated');
 });
 
-//get all users
+/**
+ * @dev get all users
+ */
 router.get('/all', (req, res) => {
   User.find().then((users) => res.json(users));
 });
 
-//delete all users
+/**
+ * @dev delete all users
+ */
 router.delete('/all', (req, res) => {
   User.deleteMany({}).then(() => res.send('deleted'));
 });
 
-//delete group code
+/**
+ * @PUT delete group from user
+ */
 router.put('/deleteGroup', async (req, res) => {
   const { email } = req.body;
   await User.findOneAndUpdate({ email },{ groupCode: null });
   res.send('group has been deleted');
 })
 
-//add user to group
+/**
+ * @POST add user to group, and update group filed in user entity
+ */
 router.post('/addGroup', async (req, res) => {
+  //TODO:: if user in group already, avoid duplication in leaderBoard
   const { groupCode } = req.body;
   const { email } = req?.session || req.body;
+  let isUserAlreadyInGroup = false;
+  console.log('add user to group', req.body)
   try {
-  console.log('req.body, addGroup', req.body);
-  await User.findOneAndUpdate({ email: req?.session?.email || email }, { groupCode });
-  console.log('after user')
-  const group = await Group.findOne({ groupCode });
+    const group = await Group.findOne({ groupCode });
+    if (!group) {
+      res.status(400).send('group does not exist');
+      return;
+    }
+  // const user = await User.findOneAndUpdate({ email: req?.session?.email || email }, { groupCode });
+  const user = await User.findOne({ email: req?.session?.email || email });
+  if (user.groupCode) {
+    isUserAlreadyInGroup = true;
+  } else {
+    user.$set({ groupCode });
+  }
+
+  const groupMembers = isUserAlreadyInGroup ? group.groupMembers : [...group.groupMembers, email];
+  
+  const leaderBoard = await getGroupLeaderBoard(groupMembers);
 
   await group.updateOne(
-    { $push: { groupMembers: email }}
+    { $addToSet: { groupMembers: email }}
   );
-  console.log('user added to group', group);
   res.send({
     groupName: group.groupName,
     groupCode: group.groupCode,
-    groupMembers: [...group.groupMembers, email],
+    groupMembers,
+    leaderBoard,
   });
   } catch (err) {
     res.status(500).send("db error");

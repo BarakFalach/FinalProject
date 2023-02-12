@@ -8,8 +8,8 @@ import {Colors} from '../../utils/constants';
 
 const JoinGroupScreen = ({navigation}) => {
   const {group} = useGroup();
-  const [groupInputCode, setGroupCode] = useState('');
   const {user} = useUser();
+  const [groupInputCode, setGroupCode] = useState('');
   const {joinGroup, isLoading} = useJoinGroup();
   useEffect(() => {
     if (group) {
