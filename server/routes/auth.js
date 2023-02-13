@@ -13,7 +13,6 @@ const client = new OAuth2Client(webClientId, clientSecret, url);
 
 router.post('/', async (req, res) => {
   const { idtoken, code } = req.headers;
-  //TODO:: needs to handle case, when there is already user in db, add the group code to the user
   try {
     const loginTicket = await client.verifyIdToken({
       idToken: idtoken,
@@ -22,8 +21,9 @@ router.post('/', async (req, res) => {
     });
     const userData = await getUserRelevantData(loginTicket, code);
     req.session.email = userData?.email;
-    updateUserData(userData.email, userData);
-    res.send(userData);
+    const user = await updateUserData(userData.email, userData);
+    console.log('user', user);
+    res.send(user);
   } catch (err) {
     console.log(err.message);
   }
@@ -70,9 +70,11 @@ const updateUserData = async (email, userData) => {
   if (user) {
     user.score = userData.score;
     user.save();
+    return user
   } else {
     const newUser = new User(userData);
     await newUser.save();
+    return newUser;
   }
 }
 
