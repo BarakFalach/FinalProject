@@ -3,7 +3,7 @@ const User = require('../db/models/User');
 const router = express.Router();
 const port = process.env.PORT || 3000;
 const { OAuth2Client } = require('google-auth-library');
-const axios = require('axios');
+const { getTodayStepCount } = require('../utils/googleFit');
 
 const webClientId = process.env.WEB_CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
@@ -41,34 +41,11 @@ const getUserInfo = async (userLoginTicket) => {
   return { name, email, picture };
 };
 
-const getTodayStepCount = async (TOKEN) => {
-  const result = await axios({
-    method: 'POST',
-    headers: {
-      authorization: 'Bearer ' + TOKEN,
-    },
-    'Content-Type': 'application/json',
-    url: `https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate`,
-    data: {
-      aggregateBy: [
-        {
-          dataTypeName: 'com.google.step_count',
-          dataSourceId:
-            'derived:com.google.step_count.delta:com.google.android.gms:estimated_steps',
-        },
-      ],
-      bucketByTime: { durationMillis: 86400000 },
-      startTimeMillis: 1665683185085-86400000,
-      endTimeMillis: 1665683185085,
-    },
-  });
-  return JSON.stringify(result.data.bucket[0].dataset[0].point[0].value[0].intVal);
-}
-
 const updateUserData = async (email, userData) => {
   const user = await User.findOne({ email });
   if (user) {
     user.score = userData.score;
+    user.access_token = userData.access_token;
     user.save();
     return user
   } else {
