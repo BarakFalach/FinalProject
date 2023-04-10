@@ -3,25 +3,25 @@ import {NavigationContainer} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import WeekView from './screens/weekView/WeekView';
+import StepsChallenge from './screens/StepsChallenge/StepsChallengeScreen';
 import HomeStackScreen from './screens/home/HomeStackNavigator';
 import LeaderBoardScreen from './screens/leaderBoard/LeaderBoardScreen';
 import {NativeBaseProvider} from 'native-base';
-
 // import AchievementsScreen from './screens/achievements/Achievements';
 
 const Tab = createBottomTabNavigator();
 
-export const WeeklyActivitiesContext = React.createContext();
+export const WeeklyDataContext = React.createContext();
 export const GroupContext = React.createContext();
 export const UserContext = React.createContext();
 
 const screenNameToIconName = {
   HomeStack: 'home',
   Login: 'gear',
-  LeaderBoard: 'trophy',
+  LeaderBoard: 'star',
   Week: 'calendar',
   Achievements: 'star',
+  'Steps Challenge': 'trophy',
 };
 
 function AppComponent() {
@@ -45,7 +45,7 @@ function AppComponent() {
             tabBarInactiveTintColor: 'gray',
           })}>
           <Tab.Screen name="HomeStack" component={HomeStackScreen} />
-          <Tab.Screen name="Week" component={WeekView} />
+          <Tab.Screen name="Steps Challenge" component={StepsChallenge} />
           <Tab.Screen name="LeaderBoard" component={LeaderBoardScreen} />
           {/* <Tab.Screen name="Achievements" component={AchievementsScreen} /> */}
         </Tab.Navigator>
@@ -56,20 +56,22 @@ function AppComponent() {
 
 export default function App() {
   const [group, setGroup] = React.useState(undefined);
-  const [weeklyActivities, setWeeklyActivity] = React.useState([
-    'Weekly steps',
+  const [weeklySteps, setWeeklySteps] = React.useState([
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
   ]);
   const [user, setUser] = React.useState(undefined);
-  const addWeeklyActivity = activity =>
-    setWeeklyActivity([...weeklyActivities, activity]);
   return (
     <NativeBaseProvider>
       <UserContext.Provider value={{user, setUser}}>
         <GroupContext.Provider value={{group, setGroup}}>
-          <WeeklyActivitiesContext.Provider
-            value={{weeklyActivities, addWeeklyActivity}}>
+          <WeeklyDataContext.Provider value={{weeklySteps, setWeeklySteps}}>
             <AppComponent />
-          </WeeklyActivitiesContext.Provider>
+          </WeeklyDataContext.Provider>
         </GroupContext.Provider>
       </UserContext.Provider>
     </NativeBaseProvider>
