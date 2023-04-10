@@ -1,6 +1,8 @@
-import {useContext} from 'react';
+import {useContext, useState} from 'react';
 import {WeeklyDataContext} from '../../App';
 import moment from 'moment';
+import {useEffect} from 'react';
+import {getSteps} from '../../api/api';
 
 function formatDate(date) {
   const formattedDate = moment(date).format('ddd');
@@ -18,7 +20,24 @@ const getFormattedDate = howManyDaysBefore => {
 };
 
 export const useWeeklySteps = () => {
-  const {weeklySteps} = useContext(WeeklyDataContext);
+  const [isLoading, setIsLoading] = useState(true);
+  const {weeklySteps, setWeeklySteps} = useContext(WeeklyDataContext);
+
+  const getWeeklySteps = async () => {
+    const steps = await getSteps();
+    setWeeklySteps(steps);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (weeklySteps?.length) {
+      setIsLoading(false);
+    } else {
+      getWeeklySteps();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const data = {
     labels: [],
     datasets: [
@@ -32,5 +51,5 @@ export const useWeeklySteps = () => {
     data.labels.push(getFormattedDate(index));
     data.datasets[0].data.push(steps);
   });
-  return {data};
+  return {data, isLoading};
 };

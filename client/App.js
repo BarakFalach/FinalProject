@@ -56,14 +56,7 @@ function AppComponent() {
 
 export default function App() {
   const [group, setGroup] = React.useState(undefined);
-  const [weeklySteps, setWeeklySteps] = React.useState([
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-  ]);
+  const [weeklySteps, setWeeklySteps] = React.useState([]);
   const [user, setUser] = React.useState(undefined);
   return (
     <NativeBaseProvider>

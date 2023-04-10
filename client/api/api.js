@@ -26,4 +26,17 @@ export const getAllGroups = async () => {
   return response.data;
 };
 
-export const joinGroupApi = async () => {};
+export const getSteps = async () => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'get',
+    url: `${baseUrl}/user/score`,
+    params: {
+      weekly: true,
+    },
+  };
+  const response = await axios(config);
+  return response.data;
+};
