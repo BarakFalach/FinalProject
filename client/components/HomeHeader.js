@@ -5,12 +5,12 @@ import {DAYLI_GOAL} from '../utils/constants';
 
 const HomeHeader = () => {
   const {user} = React.useContext(UserContext);
-  const progress = (user?.score / DAYLI_GOAL) * 100;
+  const progress = (user?.todayStepCount / DAYLI_GOAL) * 100;
   return (
     <VStack padding={4} space={3}>
       <Heading size="md">{`welcome: ${user?.name}`}</Heading>
       <VStack space={2}>
-        <Text fontSize="md">{`${user.score} steps today out of ${DAYLI_GOAL}`}</Text>
+        <Text fontSize="md">{`${user.todayStepCount} steps today out of ${DAYLI_GOAL}`}</Text>
         <Progress value={progress} size="xl" />
       </VStack>
     </VStack>

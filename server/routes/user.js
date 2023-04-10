@@ -37,7 +37,6 @@ router.put('/score', async (req, res) => {
 
 router.get('/score', async (req, res) => {
   const user = await User.findOne({ email: req.session.email });
-  console.log('FF')
   const stepCount = req.query.weekly
     ? await getStepCountsLast6Days(user.access_token)
     : await getTodayStepCount(user.access_token);

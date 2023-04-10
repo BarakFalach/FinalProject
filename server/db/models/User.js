@@ -26,6 +26,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  todayStepCount: {
+    type: Number,
+    required: false
+  },
+
   groupCode: {
     type: String,
     required: false
