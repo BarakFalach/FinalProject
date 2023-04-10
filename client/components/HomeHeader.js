@@ -1,39 +1,20 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {Heading, Progress, Text, VStack} from 'native-base';
 import {UserContext} from '../App';
-// import {helloWorld} from '../api/api';
+import {DAYLI_GOAL} from '../utils/constants';
 
 const HomeHeader = () => {
-  const {user, setUser} = React.useContext(UserContext);
+  const {user} = React.useContext(UserContext);
+  const progress = (user?.score / DAYLI_GOAL) * 100;
   return (
-    <View style={styles.container}>
-      <View style={styles.stepsContainer}>
-        <Text style={styles.text}>Today Steps </Text>
-        <Text style={styles.numericText}>{user?.score}</Text>
-      </View>
-      <View>
-        <Text style={styles.welcomeText}>{`welcome ${user?.name}`}</Text>
-      </View>
-    </View>
+    <VStack padding={4} space={3}>
+      <Heading size="md">{`welcome: ${user?.name}`}</Heading>
+      <VStack space={2}>
+        <Text fontSize="md">{`${user.score} steps today out of ${DAYLI_GOAL}`}</Text>
+        <Progress value={progress} size="xl" />
+      </VStack>
+    </VStack>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 0.13,
-    padding: 4,
-    justifyContent: 'space-between',
-    color: 'white',
-  },
-  numericText: {color: '#FFB703', fontWeight: '800', fontSize: 16},
-  text: {color: 'white', fontWeight: '500', fontSize: 16},
-  welcomeText: {
-    color: 'white',
-    fontWeight: '800',
-    fontSize: 22,
-    fontFamily: 'notoserif',
-  },
-  stepsContainer: {flexDirection: 'row'},
-});
 
 export default HomeHeader;
