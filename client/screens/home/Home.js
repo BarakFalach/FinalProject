@@ -1,22 +1,19 @@
 import React from 'react';
 import {StyleSheet, View, Button} from 'react-native';
+import {Box, VStack} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import HomeHeader from '../../components/HomeHeader';
 import GroupItem from '../../components/GroupItem/GroupItem';
-import LinearGradient from 'react-native-linear-gradient';
+import {Colors} from '../../utils/constants';
 
 function HomeScreen({navigation}) {
-  const [changeTheme, setChangeTheme] = React.useState(false);
-
   const AddActivityNavigation = () => {
     navigation.navigate('Add Activity');
   };
 
   return (
-    <LinearGradient
-      colors={['#57CC99', '#22577A']}
-      style={screenStyle.container}>
+    <VStack flex={1} backgroundColor={Colors.backGround}>
       <HomeHeader />
       <View style={{flex: 0.7}}>
         <View style={screenStyle.body}>
@@ -49,7 +46,7 @@ function HomeScreen({navigation}) {
           </Button>
         </View>
       </View>
-    </LinearGradient>
+    </VStack>
   );
 }
 

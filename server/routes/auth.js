@@ -22,8 +22,7 @@ router.post('/', async (req, res) => {
     const userData = await getUserRelevantData(loginTicket, code);
     req.session.email = userData?.email;
     const user = await updateUserData(userData.email, userData);
-    console.log('user', user);
-    res.send(user);
+    res.json(user);
   } catch (err) {
     console.log(err.message);
   }
@@ -44,7 +43,7 @@ const getUserInfo = async (userLoginTicket) => {
 const updateUserData = async (email, userData) => {
   const user = await User.findOne({ email });
   if (user) {
-    user.score = userData.score;
+    user.todayStepCount = userData?.todayStepCount;
     user.access_token = userData.access_token;
     user.save();
     return user
@@ -58,8 +57,8 @@ const updateUserData = async (email, userData) => {
 const getUserRelevantData = async (loginTicket, code) => {
   const { name, email, picture } = await getUserInfo(loginTicket);
   const { access_token, refresh_token } = await getTokensFromCode(code);
-  const score = await getTodayStepCount(access_token);
-  return { name, email, picture, score, access_token, refresh_token };
+  const todayStepCount = await getTodayStepCount(access_token);
+  return { name, email, picture, todayStepCount, access_token, refresh_token };
 
 }
 
