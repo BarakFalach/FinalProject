@@ -2,6 +2,10 @@ const express = require('express');
 const User = require('../db/models/User');
 const Group = require('../db/models/Group');
 const { getGroupLeaderBoard } = require('../utils/leaderBoard');
+const {
+  getStepCountsLast6Days,
+  getTodayStepCount,
+} = require('../utils/googleFit');
 const router = express.Router();
 
 /**
@@ -22,17 +26,22 @@ router.post('/', (req, res) => {
   res.send('user Added');
 });
 
-
 /**
  * @dev update user score
  */
 router.put('/score', async (req, res) => {
   const { email, name, picture, score, groupCode } = req.body;
-  await User.findOneAndUpdate(
-    { email },
-    { score },
-  );
+  await User.findOneAndUpdate({ email }, { score });
   res.send('user updated');
+});
+
+router.get('/score', async (req, res) => {
+  const user = await User.findOne({ email: req.session.email });
+  console.log('FF')
+  const stepCount = req.query.weekly
+    ? await getStepCountsLast6Days(user.access_token)
+    : await getTodayStepCount(user.access_token);
+  res.send(stepCount);
 });
 
 /**
@@ -54,9 +63,9 @@ router.delete('/all', (req, res) => {
  */
 router.put('/deleteGroup', async (req, res) => {
   const { email } = req.body;
-  await User.findOneAndUpdate({ email },{ groupCode: null });
+  await User.findOneAndUpdate({ email }, { groupCode: null });
   res.send('group has been deleted');
-})
+});
 
 /**
  * @POST add user to group, and update group filed in user entity
@@ -66,36 +75,36 @@ router.post('/addGroup', async (req, res) => {
   const { groupCode } = req.body;
   const { email } = req?.session || req.body;
   let isUserAlreadyInGroup = false;
-  console.log('add user to group', req.body)
+  console.log('add user to group', req.body);
   try {
     const group = await Group.findOne({ groupCode });
     if (!group) {
       res.status(400).send('group does not exist');
       return;
     }
-  // const user = await User.findOneAndUpdate({ email: req?.session?.email || email }, { groupCode });
-  const user = await User.findOne({ email: req?.session?.email || email });
-  if (user.groupCode) {
-    isUserAlreadyInGroup = true;
-  } else {
-    user.$set({ groupCode });
-  }
+    // const user = await User.findOneAndUpdate({ email: req?.session?.email || email }, { groupCode });
+    const user = await User.findOne({ email: req?.session?.email || email });
+    if (user.groupCode) {
+      isUserAlreadyInGroup = true;
+    } else {
+      user.$set({ groupCode });
+    }
 
-  const groupMembers = isUserAlreadyInGroup ? group.groupMembers : [...group.groupMembers, email];
-  
-  const leaderBoard = await getGroupLeaderBoard(groupMembers);
+    const groupMembers = isUserAlreadyInGroup
+      ? group.groupMembers
+      : [...group.groupMembers, email];
 
-  await group.updateOne(
-    { $addToSet: { groupMembers: email }}
-  );
-  res.send({
-    groupName: group.groupName,
-    groupCode: group.groupCode,
-    groupMembers,
-    leaderBoard,
-  });
+    const leaderBoard = await getGroupLeaderBoard(groupMembers);
+
+    await group.updateOne({ $addToSet: { groupMembers: email } });
+    res.send({
+      groupName: group.groupName,
+      groupCode: group.groupCode,
+      groupMembers,
+      leaderBoard,
+    });
   } catch (err) {
-    res.status(500).send("db error");
+    res.status(500).send('db error');
   }
 });
 
