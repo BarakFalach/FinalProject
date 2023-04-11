@@ -3,5 +3,11 @@ import {UserContext} from '../App';
 
 export const useUser = () => {
   const {user, setUser} = React.useContext(UserContext);
-  return {user, setUser};
+  const localSetUser = React.useCallback(
+    userData => {
+      setUser({...userData, score: userData.score + userData.todayStepCount});
+    },
+    [setUser],
+  );
+  return {user, setUser: localSetUser};
 };
