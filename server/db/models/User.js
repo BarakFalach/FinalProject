@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
     required: false
   },
   score: {
-    type: String,
+    type: Number,
     required: false
   },
   todayStepCount: {

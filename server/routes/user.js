@@ -12,7 +12,7 @@ const router = express.Router();
  * @GET get user
  */
 router.get('/', (req, res) => {
-  User.findOne({ email: req.session.email }).then((user) => res.json(user));
+  User.findOne({ email: req.session.email }).then((user) => res.json(user || "NO_USER"));
 });
 
 /**
