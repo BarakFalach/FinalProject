@@ -2,10 +2,6 @@ const express = require('express');
 const User = require('../db/models/User');
 const Group = require('../db/models/Group');
 const { getGroupLeaderBoard } = require('../utils/leaderBoard');
-const {
-  getStepCountsLast6Days,
-  getTodayStepCount,
-} = require('../utils/googleFit');
 const router = express.Router();
 
 /**
@@ -86,14 +82,6 @@ router.put('/score', async (req, res) => {
   const { email, name, picture, score, groupCode } = req.body;
   await User.findOneAndUpdate({ email }, { score });
   res.send('user updated');
-});
-
-router.get('/score', async (req, res) => {
-  const user = await User.findOne({ email: req.session.email });
-  const stepCount = req.query.weekly
-    ? await getStepCountsLast6Days(user.access_token)
-    : await getTodayStepCount(user.access_token);
-  res.send(stepCount);
 });
 
 /**

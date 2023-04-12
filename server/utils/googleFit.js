@@ -11,33 +11,6 @@ const getTodayStepCount = async (TOKEN) => {
   return JSON.stringify(stepCount);
 }
 
-
-//TODO:: let's remove this function ok ? 
-async function getStepCountsLast6Days(TOKEN) {
-  const stepCounts = [];
-
-  // Loop through the past 7 days
-  for (let i = 0; i < 6; i++) {
-    const startTime = new Date();
-    startTime.setDate(startTime.getDate() - i);
-    startTime.setHours(0, 0, 0, 0); 
-
-    const endTime = new Date();
-    endTime.setDate(endTime.getDate() - i);
-    endTime.setHours(23, 59, 59, 999);
-
-    const stepCount = await stepCountCall(TOKEN, {
-      startTimeMillis: startTime.getTime(),
-      endTimeMillis: endTime.getTime(),
-      durationMillis: 86400000,
-    })
-
-    stepCounts.push(stepCount || 0);
-  }
-
-  return stepCounts;
-}
-
 const stepCountCall = async (TOKEN, {startTimeMillis, endTimeMillis, durationMillis}) => {
   const result = await axios({
     method: 'POST',
@@ -67,6 +40,6 @@ const stepCountCall = async (TOKEN, {startTimeMillis, endTimeMillis, durationMil
 
 
 
-module.exports = { getTodayStepCount, getStepCountsLast6Days, stepCountCall };
+module.exports = { getTodayStepCount, stepCountCall };
 
 
