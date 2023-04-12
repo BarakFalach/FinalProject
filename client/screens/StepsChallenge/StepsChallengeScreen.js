@@ -8,6 +8,7 @@ import {
   Heading,
   VStack,
   HStack,
+  Text,
 } from 'native-base';
 import {BarChart} from 'react-native-chart-kit';
 import {Dimensions} from 'react-native';
@@ -17,9 +18,13 @@ const chartConfig = {
   backgroundGradientFrom: '#fff',
   backgroundGradientTo: '#fff',
   decimalPlaces: 0,
-  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+  color: (opacity = 0.5) => `rgba(0, 0, 0, ${opacity})`,
   strokeWidth: 0.5,
   barPercentage: 0.5,
+  style: {
+    borderRadius: 16,
+    backgroundColor: 'transparent', // Set backgroundColor to 'transparent'
+  },
 };
 
 const StepsChallengeScreen = () => {
@@ -66,6 +71,7 @@ const StepsChallengeScreen = () => {
               variant={option?.personal ? 'outline' : 'solid'}
               isLoading={isLoading}
               isLoadingText="..."
+              backgroundColor="#fed9b7"
               isDisabled={option?.personal}
               onPress={() =>
                 option?.personal
@@ -75,12 +81,14 @@ const StepsChallengeScreen = () => {
                       value: true,
                     })
               }>
-              Me
+              <Text color="black">Me</Text>
             </Button>
             <Button
               flex={1}
               variant={option?.personal ? 'solid' : 'outline'}
               isLoading={isLoading}
+              backgroundColor="#fed9b7"
+              textColo
               isLoadingText="..."
               isDisabled={!option?.personal}
               onPress={() =>
@@ -91,7 +99,7 @@ const StepsChallengeScreen = () => {
                     })
                   : null
               }>
-              Group
+              <Text color="black">Group</Text>
             </Button>
           </HStack>
           <Box alignItems="flex-start" maxW="300">
@@ -110,7 +118,8 @@ const StepsChallengeScreen = () => {
         {isLoading ? (
           <Loader />
         ) : (
-          <Box>
+          <Box bg="white" shadow={2} borderRadius="md" padding="0.5">
+            {/* <Box> */}
             <BarChart
               data={data}
               width={Dimensions.get('window').width}
@@ -118,6 +127,8 @@ const StepsChallengeScreen = () => {
               chartConfig={chartConfig}
               fromZero
               showValuesOnTopOfBars
+              // withHorizontalLabels={false}
+              // horizontalLabelWidth={0}
             />
           </Box>
         )}

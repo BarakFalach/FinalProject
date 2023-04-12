@@ -13,7 +13,7 @@ const JoinGroupScreen = ({navigation}) => {
   const {joinGroup, isLoading} = useJoinGroup();
   useEffect(() => {
     if (group) {
-      navigation.navigate('Home');
+      navigation.navigate('HomeStack');
     }
   }, [group, navigation]);
 

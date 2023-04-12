@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const baseUrl = 'http://10.0.2.2:3000';
+import {base_url} from '../utils/constants';
 
 export const getGroup = async groupId => {
   const config = {
@@ -8,7 +7,7 @@ export const getGroup = async groupId => {
       'Content-Type': 'application/json',
     },
     method: 'get',
-    url: `${baseUrl}/group/code/${groupId}`,
+    url: `${base_url}/group/code/${groupId}`,
   };
   const response = await axios(config);
   return response.data;
@@ -20,7 +19,7 @@ export const getAllGroups = async () => {
       'Content-Type': 'application/json',
     },
     method: 'get',
-    url: `${baseUrl}/group`,
+    url: `${base_url}/group`,
   };
   const response = await axios(config);
   return response.data;
@@ -32,7 +31,7 @@ export const getSteps = async ({startDate, endDate}) => {
       'Content-Type': 'application/json',
     },
     method: 'get',
-    url: `${baseUrl}/steps/day`,
+    url: `${base_url}/steps/day`,
     params: {
       startDate,
       endDate,
@@ -48,7 +47,7 @@ export const getPersonalMonth = async () => {
       'Content-Type': 'application/json',
     },
     method: 'get',
-    url: `${baseUrl}/steps/month`,
+    url: `${base_url}/steps/month`,
   };
   const response = await axios(config);
   return response.data;
@@ -60,7 +59,7 @@ export const getGroupDay = async ({startDate, endDate}) => {
       'Content-Type': 'application/json',
     },
     method: 'get',
-    url: `${baseUrl}/steps/day/group`,
+    url: `${base_url}/steps/day/group`,
     params: {
       startDate,
       endDate,

@@ -1,11 +1,10 @@
 import React from 'react';
 import {StyleSheet, View, Button} from 'react-native';
-import {Box, VStack} from 'native-base';
+import {Center, VStack} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import HomeHeader from '../../components/HomeHeader';
 import GroupItem from '../../components/GroupItem/GroupItem';
-import {Colors} from '../../utils/constants';
 
 function HomeScreen({navigation}) {
   const AddActivityNavigation = () => {
@@ -13,14 +12,14 @@ function HomeScreen({navigation}) {
   };
 
   return (
-    <VStack flex={1} backgroundColor={Colors.backGround}>
+    <VStack flex={1}>
       <HomeHeader />
-      <View style={{flex: 0.7}}>
+      <View style={screenStyle.container}>
         <View style={screenStyle.body}>
           <GroupItem />
         </View>
       </View>
-      <View
+      {/* <View
         style={{
           flex: 0.2,
           justifyContent: 'flex-end',
@@ -45,17 +44,17 @@ function HomeScreen({navigation}) {
             <Icon name="plus" color="white" />
           </Button>
         </View>
-      </View>
+      </View> */}
     </VStack>
   );
 }
 
 export const screenStyle = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0.7,
     justifyContent: 'center',
     alignItems: 'stretch',
-    backgroundColor: '#57cc99',
+    // backgroundColor: '#57cc99',
   },
   body: {
     flex: 1,

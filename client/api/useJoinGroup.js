@@ -2,9 +2,7 @@ import React, {useContext} from 'react';
 import {GroupContext} from '../App';
 import axios from 'axios';
 import {useUser} from '../hooks/useUser';
-
-const PORT = '3000';
-const baseUrl = `http://10.0.2.2:${PORT}/user/addGroup`;
+import {base_url} from '../utils/constants';
 
 export const useJoinGroup = () => {
   const {setGroup} = useContext(GroupContext);
@@ -15,7 +13,7 @@ export const useJoinGroup = () => {
     setIsLoading(true);
     const config = {
       method: 'post',
-      url: `${baseUrl}`,
+      url: `${base_url}/user/addGroup`,
       data: {
         groupCode,
         email: user.email,
