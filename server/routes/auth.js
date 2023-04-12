@@ -4,9 +4,11 @@ const router = express.Router();
 const port = process.env.PORT || 3000;
 const { OAuth2Client } = require('google-auth-library');
 const { getTodayStepCount } = require('../utils/googleFit');
+const {initStepCountHistory} = require('../utils/StepCount')
 
 const webClientId = process.env.WEB_CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
+//TODO:: env variable for path 
 const url = `http://localhost:${port}`;
 
 const client = new OAuth2Client(webClientId, clientSecret, url);
@@ -48,7 +50,9 @@ const updateUserData = async (email, userData) => {
     user.save();
     return user
   } else {
-    const newUser = new User(userData);
+    const score = await initStepCountHistory(userData?.email, userData.access_token) || 0
+
+    const newUser = new User({...userData, score});
     await newUser.save();
     return newUser;
   }

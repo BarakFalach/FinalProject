@@ -32,6 +32,8 @@ app.use(session({
 app.use("/user", require("./routes/user"));
 app.use("/auth", require("./routes/auth"));
 app.use("/group", require("./routes/group"));
+//dev route
+app.use("/steps", require("./routes/step-count"));
 
 
 app.listen(port, () => console.log(`auth route listening on port ${port}!`));
