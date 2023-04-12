@@ -9,7 +9,7 @@ const {initStepCountHistory} = require('../utils/StepCount')
 const webClientId = process.env.WEB_CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
 //TODO:: env variable for path 
-const url = `http://bgufit.com:${port}/auth`;
+const url = `http://bgufit.com:3000/auth`;
 
 const client = new OAuth2Client(webClientId, clientSecret, url);
 
