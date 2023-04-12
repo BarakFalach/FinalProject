@@ -9,7 +9,7 @@ const {initStepCountHistory} = require('../utils/StepCount')
 const webClientId = process.env.WEB_CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
 //TODO:: env variable for path 
-const url = `http://localhost:${port}`;
+const url = `http://194.113.194.235:${port}`;
 
 const client = new OAuth2Client(webClientId, clientSecret, url);
 
@@ -61,9 +61,13 @@ const updateUserData = async (email, userData) => {
 }
 
 const getUserRelevantData = async (loginTicket, code) => {
+  console.log('getUserDATA', loginTicket);
   const { name, email, picture } = await getUserInfo(loginTicket);
+  console.log('getTokensFromCode', code);
   const { access_token, refresh_token } = await getTokensFromCode(code);
+  console.log('get step count', access_token);
   const todayStepCount = await getTodayStepCount(access_token);
+
   return { name, email, picture, todayStepCount, access_token, refresh_token };
 
 }
