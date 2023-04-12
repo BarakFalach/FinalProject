@@ -50,12 +50,12 @@ router.post('/addGroup', async (req, res) => {
       res.status(400).send('group does not exist');
       return;
     }
-    // const user = await User.findOneAndUpdate({ email: req?.session?.email || email }, { groupCode });
     const user = await User.findOne({ email: req?.session?.email || email });
     if (user.groupCode) {
       isUserAlreadyInGroup = true;
     } else {
-      user.$set({ groupCode });
+      user.groupCode = groupCode;
+      await user.save();
     }
 
     const groupMembers = isUserAlreadyInGroup

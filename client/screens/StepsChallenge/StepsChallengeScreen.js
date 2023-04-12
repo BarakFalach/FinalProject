@@ -1,5 +1,5 @@
-import React from 'react';
-import {useWeeklySteps} from './useWeeklySteps';
+import React, {useEffect, useState} from 'react';
+import {useSteps} from './useSteps';
 import {
   Box,
   Button,
@@ -23,7 +23,34 @@ const chartConfig = {
 };
 
 const StepsChallengeScreen = () => {
-  const {data: selfWeeklySteps, isLoading} = useWeeklySteps();
+  const {data, isLoading, getPersonalWeek, getPersonalMonth} = useSteps();
+  const [fetchOption, setFetchOption] = useState({
+    week: true,
+    personal: true,
+  });
+
+  const onOptionChange = ({value, name}) => {
+    setFetchOption(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const fetch = () => {
+    switch (fetchOption.week) {
+      case true:
+        fetchOption?.personal ? getPersonalWeek() : null;
+        break;
+      case false:
+        fetchOption?.personal ? getPersonalMonth() : null;
+        break;
+      default:
+        break;
+    }
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => fetch(), [fetchOption]);
 
   return (
     <>
@@ -37,9 +64,12 @@ const StepsChallengeScreen = () => {
             <Button isDisabled={true}>Group</Button>
           </HStack>
           <Box alignItems="flex-start" maxW="300">
-            <Select minWidth="150" defaultValue="Week">
-              <Select.Item label="Week" value="Week" />
-              <Select.Item label="Month" value="Month" />
+            <Select
+              onValueChange={value => onOptionChange({value, name: 'week'})}
+              minWidth="150"
+              defaultValue={true}>
+              <Select.Item label="Week" value={true} />
+              <Select.Item label="Month" value={false} />
             </Select>
           </Box>
         </VStack>
@@ -48,7 +78,7 @@ const StepsChallengeScreen = () => {
         ) : (
           <Box>
             <BarChart
-              data={selfWeeklySteps}
+              data={data}
               width={Dimensions.get('window').width}
               height={200}
               chartConfig={chartConfig}

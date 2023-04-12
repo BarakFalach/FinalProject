@@ -11,7 +11,6 @@ import {NativeBaseProvider} from 'native-base';
 
 const Tab = createBottomTabNavigator();
 
-export const WeeklyDataContext = React.createContext();
 export const GroupContext = React.createContext();
 export const UserContext = React.createContext();
 
@@ -56,15 +55,12 @@ function AppComponent() {
 
 export default function App() {
   const [group, setGroup] = React.useState(undefined);
-  const [weeklySteps, setWeeklySteps] = React.useState([]);
   const [user, setUser] = React.useState(undefined);
   return (
     <NativeBaseProvider>
       <UserContext.Provider value={{user, setUser}}>
         <GroupContext.Provider value={{group, setGroup}}>
-          <WeeklyDataContext.Provider value={{weeklySteps, setWeeklySteps}}>
-            <AppComponent />
-          </WeeklyDataContext.Provider>
+          <AppComponent />
         </GroupContext.Provider>
       </UserContext.Provider>
     </NativeBaseProvider>
