@@ -16,7 +16,7 @@ import {Loader} from '../../components/common/Loader';
 const chartConfig = {
   backgroundGradientFrom: '#fff',
   backgroundGradientTo: '#fff',
-  decimalPlaces: 0, // optional, defaults to 2dp
+  decimalPlaces: 0,
   color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
   strokeWidth: 0.5,
   barPercentage: 0.5,
@@ -116,6 +116,8 @@ const StepsChallengeScreen = () => {
               width={Dimensions.get('window').width}
               height={200}
               chartConfig={chartConfig}
+              fromZero
+              showValuesOnTopOfBars
             />
           </Box>
         )}

@@ -15,11 +15,33 @@ function formatDate(date) {
 const dates = () => {
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  yesterday.setHours(0, 0, 0, 0);
+  // yesterday.setHours(0, 0, 0, 0);
+  const endDate = new Date(
+    Date.UTC(
+      yesterday.getUTCFullYear(),
+      yesterday.getUTCMonth(),
+      yesterday.getUTCDate(),
+      0,
+      0,
+      0,
+      0,
+    ),
+  );
   const sixDaysAgo = new Date();
   sixDaysAgo.setDate(sixDaysAgo.getDate() - 6);
-  sixDaysAgo.setHours(0, 0, 0, 0);
-  return {startDate: sixDaysAgo, endDate: yesterday};
+
+  const startDate = new Date(
+    Date.UTC(
+      sixDaysAgo.getUTCFullYear(),
+      sixDaysAgo.getUTCMonth(),
+      sixDaysAgo.getUTCDate(),
+      0,
+      0,
+      0,
+      0,
+    ),
+  );
+  return {startDate, endDate};
 };
 
 export const useSteps = () => {
