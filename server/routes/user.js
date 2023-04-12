@@ -27,37 +27,6 @@ router.post('/', (req, res) => {
 });
 
 /**
- * @dev update user score
- */
-router.put('/score', async (req, res) => {
-  const { email, name, picture, score, groupCode } = req.body;
-  await User.findOneAndUpdate({ email }, { score });
-  res.send('user updated');
-});
-
-router.get('/score', async (req, res) => {
-  const user = await User.findOne({ email: req.session.email });
-  const stepCount = req.query.weekly
-    ? await getStepCountsLast6Days(user.access_token)
-    : await getTodayStepCount(user.access_token);
-  res.send(stepCount);
-});
-
-/**
- * @dev get all users
- */
-router.get('/all', (req, res) => {
-  User.find().then((users) => res.json(users));
-});
-
-/**
- * @dev delete all users
- */
-router.delete('/all', (req, res) => {
-  User.deleteMany({}).then(() => res.send('deleted'));
-});
-
-/**
  * @PUT delete group from user
  */
 router.put('/deleteGroup', async (req, res) => {
@@ -105,6 +74,40 @@ router.post('/addGroup', async (req, res) => {
   } catch (err) {
     res.status(500).send('db error');
   }
+});
+
+
+// ================= DEV ================
+
+/**
+ * @dev update user score
+ */
+router.put('/score', async (req, res) => {
+  const { email, name, picture, score, groupCode } = req.body;
+  await User.findOneAndUpdate({ email }, { score });
+  res.send('user updated');
+});
+
+router.get('/score', async (req, res) => {
+  const user = await User.findOne({ email: req.session.email });
+  const stepCount = req.query.weekly
+    ? await getStepCountsLast6Days(user.access_token)
+    : await getTodayStepCount(user.access_token);
+  res.send(stepCount);
+});
+
+/**
+ * @dev get all users
+ */
+router.get('/all', (req, res) => {
+  User.find().then((users) => res.json(users));
+});
+
+/**
+ * @dev delete all users
+ */
+router.delete('/all', (req, res) => {
+  User.deleteMany({}).then(() => res.send('deleted'));
 });
 
 module.exports = router;

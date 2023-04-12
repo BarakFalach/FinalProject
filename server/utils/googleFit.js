@@ -6,12 +6,13 @@ const getTodayStepCount = async (TOKEN) => {
   const endOfDay = new Date().setHours(23, 59, 59, 999); // End of current day
   const aDay = 86400000;
   
-  const result = await  stepCountCall(TOKEN, {startTimeMillis: startOfDay, endTimeMillis: endOfDay, durationMillis: aDay});
-
-  return JSON.stringify(result.data.bucket[0].dataset[0].point[0].value[0].intVal);
+  const stepCount = await  stepCountCall(TOKEN, {startTimeMillis: startOfDay, endTimeMillis: endOfDay, durationMillis: aDay});
+  
+  return JSON.stringify(stepCount);
 }
 
 
+//TODO:: let's remove this function ok ? 
 async function getStepCountsLast6Days(TOKEN) {
   const stepCounts = [];
 
@@ -25,14 +26,11 @@ async function getStepCountsLast6Days(TOKEN) {
     endTime.setDate(endTime.getDate() - i);
     endTime.setHours(23, 59, 59, 999);
 
-    const result = await stepCountCall(TOKEN, {
+    const stepCount = await stepCountCall(TOKEN, {
       startTimeMillis: startTime.getTime(),
       endTimeMillis: endTime.getTime(),
       durationMillis: 86400000,
     })
-
-    const bucket = result.data.bucket[0];
-    const stepCount = bucket && bucket.dataset[0] && bucket.dataset[0].point[0].value[0].intVal;
 
     stepCounts.push(stepCount || 0);
   }
@@ -40,8 +38,8 @@ async function getStepCountsLast6Days(TOKEN) {
   return stepCounts;
 }
 
-const stepCountCall = (TOKEN, {startTimeMillis, endTimeMillis, durationMillis}) => {
-  return axios({
+const stepCountCall = async (TOKEN, {startTimeMillis, endTimeMillis, durationMillis}) => {
+  const result = await axios({
     method: 'POST',
     headers: {
       authorization: 'Bearer ' + TOKEN,
@@ -61,11 +59,14 @@ const stepCountCall = (TOKEN, {startTimeMillis, endTimeMillis, durationMillis}) 
       endTimeMillis,
     },
   });
+
+  const bucket = result.data.bucket[0];
+  return bucket && bucket.dataset[0] && bucket.dataset[0].point[0].value[0].intVal;
 }
 
 
 
 
-module.exports = { getTodayStepCount, getStepCountsLast6Days };
+module.exports = { getTodayStepCount, getStepCountsLast6Days, stepCountCall };
 
 
