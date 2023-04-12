@@ -1,12 +1,26 @@
 import {useState} from 'react';
 import moment from 'moment';
-import {getSteps, getPersonalMonth as getPersonalMonthApi} from '../../api/api';
+import {
+  getSteps,
+  getPersonalMonth as getPersonalMonthApi,
+  getGroupDay,
+} from '../../api/api';
 import {useUser} from '../../hooks/useUser';
 
 function formatDate(date) {
   const formattedDate = moment(date).format('ddd');
   return formattedDate;
 }
+
+const dates = () => {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  yesterday.setHours(0, 0, 0, 0);
+  const sixDaysAgo = new Date();
+  sixDaysAgo.setDate(sixDaysAgo.getDate() - 6);
+  sixDaysAgo.setHours(0, 0, 0, 0);
+  return {startDate: sixDaysAgo, endDate: yesterday};
+};
 
 export const useSteps = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -42,15 +56,13 @@ export const useSteps = () => {
 
   const getPersonalWeek = async () => {
     setIsLoading(true);
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const sixDaysAgo = new Date();
-    sixDaysAgo.setDate(sixDaysAgo.getDate() - 7);
+    const {startDate, endDate} = dates();
 
     const steps = await getSteps({
-      startDate: sixDaysAgo,
-      endDate: yesterday,
+      startDate,
+      endDate,
     });
+    //move adding the current steps to server
     const newData = {
       labels: [formatDate(new Date())],
       datasets: [
@@ -68,5 +80,30 @@ export const useSteps = () => {
     setIsLoading(false);
   };
 
-  return {data, isLoading, getPersonalWeek, getPersonalMonth};
+  const getGroupWeek = async () => {
+    setIsLoading(true);
+    const {startDate, endDate} = dates();
+
+    const steps = await getGroupDay({
+      startDate,
+      endDate,
+    });
+    const newData = {
+      labels: [],
+      datasets: [
+        {
+          data: [],
+        },
+      ],
+    };
+
+    steps?.forEach(stepObject => {
+      newData.labels.push(formatDate(stepObject?.date));
+      newData.datasets[0].data.push(stepObject?.steps);
+    });
+    setData(newData);
+    setIsLoading(false);
+  };
+
+  return {data, isLoading, getPersonalWeek, getPersonalMonth, getGroupWeek};
 };

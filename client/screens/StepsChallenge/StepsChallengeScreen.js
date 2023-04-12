@@ -23,26 +23,27 @@ const chartConfig = {
 };
 
 const StepsChallengeScreen = () => {
-  const {data, isLoading, getPersonalWeek, getPersonalMonth} = useSteps();
-  const [fetchOption, setFetchOption] = useState({
+  const {data, isLoading, getPersonalWeek, getPersonalMonth, getGroupWeek} =
+    useSteps();
+  const [option, setOption] = useState({
     week: true,
     personal: true,
   });
 
   const onOptionChange = ({value, name}) => {
-    setFetchOption(prevState => ({
+    setOption(prevState => ({
       ...prevState,
       [name]: value,
     }));
   };
 
   const fetch = () => {
-    switch (fetchOption.week) {
+    switch (option.week) {
       case true:
-        fetchOption?.personal ? getPersonalWeek() : null;
+        option?.personal ? getPersonalWeek() : getGroupWeek();
         break;
       case false:
-        fetchOption?.personal ? getPersonalMonth() : null;
+        option?.personal ? getPersonalMonth() : null;
         break;
       default:
         break;
@@ -50,7 +51,7 @@ const StepsChallengeScreen = () => {
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => fetch(), [fetchOption]);
+  useEffect(() => fetch(), [option]);
 
   return (
     <>
@@ -59,9 +60,39 @@ const StepsChallengeScreen = () => {
           <Heading size="md">Steps Challenge</Heading>
         </Center>
         <VStack paddingLeft={2} space={3} paddingTop={4} paddingBottom={3}>
-          <HStack space={3}>
-            <Button>Me</Button>
-            <Button isDisabled={true}>Group</Button>
+          <HStack space={3} width="200px">
+            <Button
+              flex={1}
+              variant={option?.personal ? 'outline' : 'solid'}
+              isLoading={isLoading}
+              isLoadingText="..."
+              isDisabled={option?.personal}
+              onPress={() =>
+                option?.personal
+                  ? null
+                  : onOptionChange({
+                      name: 'personal',
+                      value: true,
+                    })
+              }>
+              Me
+            </Button>
+            <Button
+              flex={1}
+              variant={option?.personal ? 'solid' : 'outline'}
+              isLoading={isLoading}
+              isLoadingText="..."
+              isDisabled={!option?.personal}
+              onPress={() =>
+                option?.personal
+                  ? onOptionChange({
+                      name: 'personal',
+                      value: false,
+                    })
+                  : null
+              }>
+              Group
+            </Button>
           </HStack>
           <Box alignItems="flex-start" maxW="300">
             <Select
@@ -73,6 +104,9 @@ const StepsChallengeScreen = () => {
             </Select>
           </Box>
         </VStack>
+        <Heading size="sm" padding={2}>{`${
+          option.personal ? 'My' : 'Group'
+        } Steps`}</Heading>
         {isLoading ? (
           <Loader />
         ) : (

@@ -53,3 +53,19 @@ export const getPersonalMonth = async () => {
   const response = await axios(config);
   return response.data;
 };
+
+export const getGroupDay = async ({startDate, endDate}) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'get',
+    url: `${baseUrl}/steps/day/group`,
+    params: {
+      startDate,
+      endDate,
+    },
+  };
+  const response = await axios(config);
+  return response.data;
+};
