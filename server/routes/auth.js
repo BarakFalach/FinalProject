@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
     const user = await updateUserData(userData.email, userData);
     res.json(user);
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
   }
 });
 
