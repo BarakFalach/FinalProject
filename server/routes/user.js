@@ -12,17 +12,6 @@ router.get('/', (req, res) => {
 });
 
 /**
- * @POST add user
- */
-router.post('/', (req, res) => {
-  const { email } = req.body;
-  const newUser = new User({ email });
-  newUser.save();
-  req.session.email = email;
-  res.send('user Added');
-});
-
-/**
  * @PUT delete group from user
  */
 router.put('/deleteGroup', async (req, res) => {
@@ -74,6 +63,16 @@ router.post('/addGroup', async (req, res) => {
 
 
 // ================= DEV ================
+
+router.post('/', async (req, res) => {
+  const { email, groupCode} = req.body;
+  const newUser = new User(req.body);
+  await newUser.save();
+  const group = await Group.findOne({ groupCode });
+  group.groupMembers.push(email);
+  await group.save();
+  res.send('user Added, and added to group');
+});
 
 /**
  * @dev update user score

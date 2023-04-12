@@ -1,5 +1,6 @@
 const { stepCountCall } = require('./googleFit');
 const StepCount = require('../db/models/StepCount');
+const Group = require('../db/models/Group');
 
 const INIT_DATE = new Date("2023,4,1")
 
@@ -38,4 +39,49 @@ const initStepCountHistory = async (email, TOKEN) => {
   return score
 }
 
-module.exports = { initStepCountHistory };
+const userStepCount = async (email, {startDate, endDate}) => {
+  console.log('userStepCount', email, startDate, endDate)
+  const stepCountEntities = await StepCount.find({ user_email: email ,date: { $gte: startDate, $lte: endDate }});
+  const stepsArray = stepCountEntities.map((stepCountEntity) => ({
+    steps: stepCountEntity.step_count, 
+    date: stepCountEntity.date
+  }));
+  return stepsArray
+}
+
+const groupStepCount = async (groupCode, {startDate, endDate}) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const userIds = (await Group.findOne({ groupCode })).groupMembers;
+  const stepsByDate = {};
+
+  // Get step counts for each user
+  for (const userId of userIds) {
+    const stepCounts = await StepCount.find({ user_email: userId, date: { $gte: startDate, $lte: endDate }});
+    const todaysSteps = (await User.findOne({ email: userId })).todayStepCount;
+
+    
+    // Accumulate step counts by date
+    for (const stepCount of stepCounts) {
+      const date = stepCount.date;
+      stepsByDate[date] = (stepsByDate[date] || 0) + stepCount.step_count;
+    }
+    stepsByDate[today] = (stepsByDate[today] || 0) + todaysSteps;
+  }
+
+
+  // Convert accumulated steps by date to array of objects
+  const result = [];
+  for (const date in stepsByDate) {
+    result.push({ steps: stepsByDate[date], date: new Date(date) });
+  }
+
+  //sort by date
+  result.sort((a, b) => b.date - a.date);
+  
+  return result;
+
+
+}
+
+module.exports = { initStepCountHistory, groupStepCount, userStepCount };

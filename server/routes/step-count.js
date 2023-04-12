@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const StepCount = require('../db/models/StepCount');
 const User = require('../db/models/User');
+const {userStepCount, groupStepCount} = require('../utils/StepCount');
 
 /**
  * @dev Get All step counts entities
@@ -25,12 +26,14 @@ router.delete('/', async (req, res) => {
 router.get('/day', async (req, res) => {
   const { startDate, endDate } = req.query;
   const { email } = req.session;
-  const stepCountEntities = await StepCount.find({ user_email: email ,date: { $gte: startDate, $lte: endDate }});
-  const stepsArray = stepCountEntities.map((stepCountEntity) => ({
-    steps: stepCountEntity.step_count, 
-    date: stepCountEntity.date
-  }));
+  const stepsArray = await userStepCount(email, { startDate, endDate });
+  res.json(stepsArray);
+});
 
+router.get('/day/group', async (req, res) => {
+  const { startDate, endDate } = req.query;
+  const user = await User.findOne({ email: req.session.email });
+  const stepsArray = await groupStepCount(user?.groupCode, { startDate, endDate });
   res.json(stepsArray);
 });
 
