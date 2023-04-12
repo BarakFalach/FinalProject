@@ -16,11 +16,13 @@ const client = new OAuth2Client(webClientId, clientSecret, url);
 router.post('/', async (req, res) => {
   const { idtoken, code } = req.headers;
   try {
+    console.log('idtoken', idtoken);
     const loginTicket = await client.verifyIdToken({
       idToken: idtoken,
       audience: webClientId,
       clientSecret,
     });
+    console.log('loginTicket', loginTicket);
     const userData = await getUserRelevantData(loginTicket, code);
     req.session.email = userData?.email;
     const user = await updateUserData(userData.email, userData);
