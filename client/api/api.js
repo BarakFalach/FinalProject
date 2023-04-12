@@ -26,16 +26,29 @@ export const getAllGroups = async () => {
   return response.data;
 };
 
-export const getSteps = async () => {
+export const getSteps = async ({startDate, endDate}) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
     },
     method: 'get',
-    url: `${baseUrl}/user/score`,
+    url: `${baseUrl}/steps/day`,
     params: {
-      weekly: true,
+      startDate,
+      endDate,
     },
+  };
+  const response = await axios(config);
+  return response.data;
+};
+
+export const getPersonalMonth = async () => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'get',
+    url: `${baseUrl}/steps/month`,
   };
   const response = await axios(config);
   return response.data;
