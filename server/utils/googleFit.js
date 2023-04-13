@@ -19,7 +19,6 @@ const stepCountCall = async (
   { startTimeMillis, endTimeMillis, durationMillis }
 ) => {
   try {
-    throw 'Error in stepCountCall';
     const result = await axios({
       method: 'POST',
       headers: {

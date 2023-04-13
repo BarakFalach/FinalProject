@@ -36,7 +36,11 @@ export const useSignIn = () => {
 
     await signInCall(data, headers)
       .then(userData => setUser(userData.data))
-      .catch(err => console.log(err?.status, 'tolod you '));
+      .catch(err => {
+        if (err?.response?.status === 413) {
+          setError(SignInErrors.GOOGLE_FIT);
+        }
+      });
 
     setIsLoading(false);
   };
@@ -52,10 +56,11 @@ export const useSignIn = () => {
 
   const signIn = async () => {
     try {
-      setIsLoading(true);
+      setError(null);
       console.log('Stsrt sign in');
       await GoogleSignin.hasPlayServices();
       console.log('hasPlayServices');
+      setIsLoading(true);
       GoogleSignin.signIn().then(userAuthData => authClient(userAuthData));
     } catch (error) {
       setIsLoading(false);
