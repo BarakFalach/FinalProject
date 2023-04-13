@@ -39,8 +39,8 @@ app.use("/group", require("./routes/group"));
 app.use("/steps", require("./routes/step-count"));
 
 // read the SSL/TLS certificate and private key from file system
-const sslKey = fs.readFileSync('/etc/letsencrypt/live/bgufit.com/privkey.pem', 'utf8');
-const sslCert = fs.readFileSync('/etc/letsencrypt/live/bgufit.com/fullchain.pem', 'utf8');
+const sslKey = fs.readFileSync('/etc/letsencrypt/live/bgufit.com/privkey.pem');
+const sslCert = fs.readFileSync('/etc/letsencrypt/live/bgufit.com/fullchain.pem');
 
 // create the HTTPS server
 const httpsOptions = {
