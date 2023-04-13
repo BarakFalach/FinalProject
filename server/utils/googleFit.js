@@ -56,7 +56,6 @@ const stepCountCall = async (
       return 0;
     }
   } catch (err) {
-    console.log(err);
     throw 'Error in stepCountCall';
   }
 };
