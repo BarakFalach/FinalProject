@@ -36,7 +36,7 @@ export const useSignIn = () => {
 
     await signInCall(data, headers)
       .then(userData => setUser(userData.data))
-      .catch(err => console.log(err));
+      .catch(err => console.log(err?.status, 'tolod you '));
 
     setIsLoading(false);
   };
@@ -64,9 +64,6 @@ export const useSignIn = () => {
         // user cancelled the login flow
       } else if (error.code === statusCodes.IN_PROGRESS) {
         console.log('Signing In');
-        // operation (e.g. sign in) is in progress already
-      } else if (error.error === 'Error in stepCountCall') {
-        setError(SignInErrors.GOOGLE_FIT);
         // operation (e.g. sign in) is in progress already
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         console.log('Play Services Not Available or Outdated');
