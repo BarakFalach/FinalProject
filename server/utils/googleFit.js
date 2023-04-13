@@ -34,7 +34,11 @@ const stepCountCall = async (TOKEN, {startTimeMillis, endTimeMillis, durationMil
   });
 
   const bucket = result.data.bucket[0];
-  return bucket && bucket.dataset[0] && bucket.dataset[0].point[0].value[0].intVal;
+if (bucket && bucket.dataset && bucket.dataset[0] && bucket.dataset[0].point && bucket.dataset[0].point[0] && bucket.dataset[0].point[0].value && bucket.dataset[0].point[0].value[0]) {
+  return bucket.dataset[0].point[0].value[0].intVal;
+} else {
+  return 0;
+}
 }
 
 
