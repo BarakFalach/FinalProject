@@ -8,7 +8,7 @@ const policyFilePath = path.join(__dirname, '../html/privacy_policy.html');
 const termsFilePath = path.join(__dirname, '../html/terms_of_service.html');
 
 
-router.get('/home', (req, res) => {
+router.get('/', (req, res) => {
   res.sendFile(htmlFilePath);
 });
 
