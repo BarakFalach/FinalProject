@@ -5,6 +5,7 @@ import {
 import {useEffect, useState} from 'react';
 import {useUser} from '../hooks/useUser';
 import {signInCall} from './login';
+import {SignInErrors} from '../utils/constants';
 
 const webClientId =
   '268322603163-mh7i98imn3m5s949bdqa1pi5bt6kmbmq.apps.googleusercontent.com';
@@ -12,6 +13,7 @@ const webClientId =
 export const useSignIn = () => {
   const {setUser} = useUser();
   const [isLoading, setIsLoading] = useState(false);
+  const [signInError, setError] = useState(null);
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -32,9 +34,15 @@ export const useSignIn = () => {
       code: userAuthData.serverAuthCode,
     };
 
-    signInCall(data, headers)
+    await signInCall(data, headers)
       .then(userData => setUser(userData.data))
-      .catch(err => console.log(err));
+      .catch(err => {
+        if (err?.response?.status === 413) {
+          setError(SignInErrors.GOOGLE_FIT);
+        }
+      });
+
+    setIsLoading(false);
   };
 
   const signOut = async () => {
@@ -48,11 +56,14 @@ export const useSignIn = () => {
 
   const signIn = async () => {
     try {
+      setError(null);
       console.log('Stsrt sign in');
       await GoogleSignin.hasPlayServices();
       console.log('hasPlayServices');
+      setIsLoading(true);
       GoogleSignin.signIn().then(userAuthData => authClient(userAuthData));
     } catch (error) {
+      setIsLoading(false);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log('User Cancelled the Login Flow');
         // user cancelled the login flow
@@ -68,5 +79,5 @@ export const useSignIn = () => {
       }
     }
   };
-  return {signIn, signOut, isLoading};
+  return {signIn, signOut, isLoading, error: signInError};
 };
