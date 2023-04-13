@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Button} from 'react-native';
-import {Center, VStack} from 'native-base';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {VStack} from 'native-base';
 
 import HomeHeader from '../../components/HomeHeader';
 import GroupItem from '../../components/GroupItem/GroupItem';
@@ -51,13 +50,13 @@ function HomeScreen({navigation}) {
 
 export const screenStyle = StyleSheet.create({
   container: {
-    flex: 0.7,
+    flex: 0.9,
     justifyContent: 'center',
     alignItems: 'stretch',
     // backgroundColor: '#57cc99',
   },
   body: {
-    flex: 1,
+    flex: 0.7,
     paddingTop: 30,
     paddingBottom: 30,
     paddingRight: 80,

@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
-import {GroupContext} from '../../App';
 import {useGroup} from '../../hooks/useGroup';
 import GroupItemFooter from './GroupItemFooter';
 
