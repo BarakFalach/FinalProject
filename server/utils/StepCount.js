@@ -2,7 +2,7 @@ const { stepCountCall } = require('./googleFit');
 const StepCount = require('../db/models/StepCount');
 const Group = require('../db/models/Group');
 
-const INIT_DATE = new Date("2023,4,1")
+const INIT_DATE = new Date("2023,2,1")
 
 //TODO:: needs to add a refresh token logic
 const initStepCountHistory = async (email, TOKEN) => {
