@@ -1,8 +1,8 @@
 const express = require('express');
 const User = require('../db/models/User');
 const router = express.Router();
-const port = process.env.PORT || 3000;
-const base_url = process.env.BASE_URL || "http://bgufit.com";
+const port = process.env.PORT || '';
+const base_url = process.env.BASE_URL || "https://bgufit.com";
 const { OAuth2Client } = require('google-auth-library');
 const { getTodayStepCount } = require('../utils/googleFit');
 const {initStepCountHistory} = require('../utils/StepCount')
