@@ -43,6 +43,7 @@ const sslKey = fs.readFileSync('/etc/letsencrypt/live/bgufit.com/privkey.pem');
 const sslCert = fs.readFileSync('/etc/letsencrypt/live/bgufit.com/fullchain.pem');
 
 console.log('sslKey', sslKey);
+console.log('sslCert', sslCert);
 
 // create the HTTPS server
 const httpsOptions = {
