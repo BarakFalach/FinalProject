@@ -2,14 +2,14 @@ const express = require('express');
 const User = require('../db/models/User');
 const router = express.Router();
 const port = process.env.PORT || 3000;
+const base_url = process.env.BASE_URL || "http://bgufit.com";
 const { OAuth2Client } = require('google-auth-library');
 const { getTodayStepCount } = require('../utils/googleFit');
 const {initStepCountHistory} = require('../utils/StepCount')
 
 const webClientId = process.env.WEB_CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
-//TODO:: env variable for path 
-const url = `http://bgufit.com:3000/auth`;
+const url = `${base_url}:${port}/auth`;
 
 const client = new OAuth2Client(webClientId, clientSecret, url);
 
