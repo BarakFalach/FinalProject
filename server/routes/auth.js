@@ -29,6 +29,9 @@ router.post('/', async (req, res) => {
     res.json(user);
   } catch (err) {
     console.log(err);
+    if (err === "Error in stepCountCall") {
+      res.status(500).json({ error: "Error in stepCountCall" });
+    }
   }
 });
 
