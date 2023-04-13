@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
-import {GroupContext} from '../../App';
 import {useGroup} from '../../hooks/useGroup';
 import GroupItemFooter from './GroupItemFooter';
 
@@ -33,8 +32,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F1FAEE',
+    backgroundColor: '#fed9b7',
     borderRadius: 10,
+    //add shadow
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   headerText: {
     fontSize: 20,
@@ -44,7 +49,12 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 100 / 2,
-    backgroundColor: '#D9D9D9',
+    backgroundColor: '#fff',
+    borderColor: 'black',
+    shadowOffset: {
+      width: 23,
+      height: -10,
+    },
   },
   iconContainer: {
     flex: 4,

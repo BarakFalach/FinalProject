@@ -11,13 +11,39 @@ const icons = {
   group: require('../../assets/group.png'),
 };
 
+function convertToOrdinal(num) {
+  if (isNaN(num)) {
+    return num;
+  }
+  var lastDigit = num % 10;
+  var lastTwoDigits = num % 100;
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
+    return num + 'th';
+  }
+  switch (lastDigit) {
+    case 1:
+      return num + 'st';
+    case 2:
+      return num + 'nd';
+    case 3:
+      return num + 'rd';
+    default:
+      return num + 'th';
+  }
+}
+
 const GroupItemFooter = () => {
   const {user} = useUser();
   const {group} = React.useContext(GroupContext);
+  const position =
+    group?.groupMembers?.findIndex(member => member === user.email) + 1;
   return (
     <View style={groupItemFooterStyles.container}>
       <GroupIconItem iconSource={icons.score} value={user?.score} />
-      <GroupIconItem iconSource={icons.podium} value={'1st'} />
+      <GroupIconItem
+        iconSource={icons.podium}
+        value={convertToOrdinal(position)}
+      />
       <GroupIconItem
         iconSource={icons.group}
         value={group?.groupMembers?.length}

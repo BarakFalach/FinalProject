@@ -38,7 +38,6 @@ function LoginScreen({navigation}) {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
-        backgroundColor: Colors.secondary,
       }}>
       <GoogleSigninButton
         size={GoogleSigninButton.Size.Wide}
