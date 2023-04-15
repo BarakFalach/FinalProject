@@ -37,8 +37,8 @@ const stepCountCall = async (
           },
         ],
         bucketByTime: { durationMillis },
-        startTimeMillis: startTimeMillis + GMT_OFFSET,
-        endTimeMillis: endTimeMillis + GMT_OFFSET,
+        startTimeMillis: startTimeMillis - GMT_OFFSET,
+        endTimeMillis: endTimeMillis - GMT_OFFSET,
       },
     });
 
