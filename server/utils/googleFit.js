@@ -1,5 +1,7 @@
 const axios = require('axios');
 
+const GMT_OFFSET = 10800000; // 3 hours in milliseconds
+
 const getTodayStepCount = async (TOKEN) => {
   const startOfDay = new Date().setHours(0, 0, 0, 0); // Start of current day
   const endOfDay = new Date().setHours(23, 59, 59, 999); // End of current day
@@ -35,8 +37,8 @@ const stepCountCall = async (
           },
         ],
         bucketByTime: { durationMillis },
-        startTimeMillis,
-        endTimeMillis,
+        startTimeMillis: startTimeMillis + GMT_OFFSET,
+        endTimeMillis: endTimeMillis + GMT_OFFSET,
       },
     });
 
