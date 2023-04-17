@@ -2,13 +2,22 @@ const express = require('express');
 const User = require('../db/models/User');
 const Group = require('../db/models/Group');
 const { getGroupLeaderBoard } = require('../utils/leaderBoard');
+const { getTodayStepCount } = require('../utils/googleFit');
 const router = express.Router();
 
 /**
  * @GET get user
  */
-router.get('/', (req, res) => {
-  User.findOne({ email: req.session.email }).then((user) => res.json(user || "NO_USER"));
+router.get('/', async (req, res) => {
+  const user = await User.findOne({ email: req.session.email })
+  if (!user) {
+    res.send('NO_USER');
+    return;
+  }
+  const todaysStepCount = await getTodayStepCount(user.access_token);
+  user.todayStepCount = todaysStepCount;
+  await user.save();
+  res.json(user);
 });
 
 /**
