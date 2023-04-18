@@ -23,9 +23,13 @@ router.post('/', async (req, res) => {
       clientSecret,
     });
     console.log('loginTicket', loginTicket);
-    const userData = await getUserRelevantData(loginTicket, code);
+    let userData = await getUserRelevantData(loginTicket, code);
     req.session.email = userData?.email;
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', await client.getTokenInfo(userData.access_token))
+    const expiry_date_token = await client.getTokenInfo(userData.access_token)
+    const expireInMins = millisToMinutesAndSeconds ((Date().now - expiry_date_token))
+    if ( expireInMins < 10) {
+       userData = await getUserRelevantData(loginTicket, code);
+    }
     const user = await updateUserData(userData.email, userData);
     res.json(user);
   } catch (err) {
@@ -75,6 +79,12 @@ const getUserRelevantData = async (loginTicket, code) => {
 
   return { name, email, picture, todayStepCount, access_token, refresh_token };
 
+}
+
+
+function millisToMinutesAndSeconds(millis) {
+  var minutes = Math.floor(millis / 60000);
+  return minutes;
 }
 
 module.exports = router;
