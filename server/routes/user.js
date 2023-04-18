@@ -91,6 +91,13 @@ router.get('/all', (req, res) => {
 });
 
 /**
+ * @dev get google token info
+ */
+router.get('/tokenInfo',(req,res) => {
+  User.getInfoToken();
+})
+
+/**
  * @dev delete all users
  */
 router.delete('/all', (req, res) => {

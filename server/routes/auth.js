@@ -11,6 +11,7 @@ const webClientId = process.env.WEB_CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
 const url = `${base_url}:${port}/auth`;
 
+const s = null;
 const client = new OAuth2Client(webClientId, clientSecret, url);
 
 router.post('/', async (req, res) => {
@@ -26,6 +27,8 @@ router.post('/', async (req, res) => {
     const userData = await getUserRelevantData(loginTicket, code);
     req.session.email = userData?.email;
     const user = await updateUserData(userData.email, userData);
+    const tokenInfo = await client.getTokenInfo(user.access_token);
+    console.log(tokenInfo.expiry_date);
     res.json(user);
   } catch (err) {
     console.log(err);
