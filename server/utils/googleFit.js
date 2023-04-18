@@ -13,7 +13,7 @@ const getTodayStepCount = async (TOKEN) => {
     durationMillis: aDay,
   });
 
-  return JSON.stringify(stepCount);
+  return stepCount
 };
 
 const stepCountCall = async (
