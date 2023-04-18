@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
     console.log('loginTicket', loginTicket);
     const userData = await getUserRelevantData(loginTicket, code);
     req.session.email = userData?.email;
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', client.getTokenInfo(userData.access_token))
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', await client.getTokenInfo(userData.access_token))
     const user = await updateUserData(userData.email, userData);
     res.json(user);
   } catch (err) {
