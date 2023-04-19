@@ -96,4 +96,44 @@ router.get('/playground', async (req, res) => {
   res.json(score);
 });
 
+router.get('/monthGroup', async (req, res) => {
+  const { email } = req.query;
+  //console.log('Email:', email);
+  const user = await User.findOne({ email });
+  //console.log('User:', user);
+  if (!user) {
+    res.status(404).send('User not found');
+    return;
+  }
+  const groupCode = user?.groupCode;
+  //console.log('Group Code:', groupCode);
+  if (!groupCode) {
+    res.status(404).send('Group not found');
+    return;
+  }
+  const group = await Group.findOne({ groupCode });
+  //console.log('Group:', group);
+  const emails = group?.groupMembers;
+
+  const results = await StepCount.aggregate([
+    {
+      $match: {
+        email: { $in: emails },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        totalSteps: { $sum: '$step_count' },
+      },
+    },
+  ]);
+
+  const totalSteps = results.length > 0 ? results[0].totalSteps : 0;
+
+  res.json(totalSteps);
+});
+
+
+
 module.exports = router;
