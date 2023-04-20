@@ -11,8 +11,7 @@ import LoginScreen from './screens/login/Login';
 import HomeScreen from './screens/home/Home';
 import JoinGroupScreen from './screens/joinGroup/JoinGroupScreen';
 import {Colors} from './utils/constants';
-// import AddActivity from '../addActivity/AddActivity';
-// import AchievementsScreen from './screens/achievements/Achievements';
+import {WelcomeScreen} from './screens/login/WelcomeScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -36,19 +35,25 @@ function HomeStackNavigator() {
       screenOptions={{
         headerTintColor: 'white',
         headerTitleAlign: 'center',
-
+        headerShown: false,
         headerStyle: {
           backgroundColor: Colors.blue,
         },
       }}>
-      <HomeStack.Screen name="Login" component={LoginScreen} />
+      <HomeStack.Screen name="Welcome" component={WelcomeScreen} />
+      <HomeStack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="Login"
+        component={LoginScreen}
+      />
       <HomeStack.Screen name="Join Group" component={JoinGroupScreen} />
       <HomeStack.Screen
         options={{headerShown: false}}
         name="HomeStack"
         component={Tabs}
       />
-      {/* <HomeStack.Screen name="Add Activity" component={AddActivity} /> */}
     </HomeStack.Navigator>
   );
 }
