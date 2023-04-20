@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, Dimensions} from 'react-native';
 import {useJoinGroup} from '../../api/useJoinGroup';
 import {useGroup} from '../../hooks/useGroup';
 import {useUser} from '../../hooks/useUser';
-import {Input, VStack, Button} from 'native-base';
-import {Colors} from '../../utils/constants';
+import {Input, VStack, Button, Center} from 'native-base';
+import {Colors, Fonts} from '../../utils/constants';
+import {Loader} from '../../components/common/Loader';
 
 const JoinGroupScreen = ({navigation}) => {
   const {group} = useGroup();
@@ -18,11 +19,18 @@ const JoinGroupScreen = ({navigation}) => {
   }, [group, navigation]);
 
   if (user?.groupCode) {
-    return <Text>Loading</Text>;
+    return (
+      <Center height={Dimensions.get('window').height}>
+        <Loader />
+      </Center>
+    );
   }
   return (
     <View style={styles.container}>
       <VStack space={4} alignItems="center" width={'250px'}>
+        <Text style={{color: Colors.blue, fontFamily: Fonts.SemiBold}}>
+          Ready to get fit with a group? Enter your group code to join now!
+        </Text>
         <Input
           variant="underlined"
           onChangeText={setGroupCode}
@@ -39,7 +47,7 @@ const JoinGroupScreen = ({navigation}) => {
           }}
         />
         <Button
-          bg={Colors.secondary}
+          bg={Colors.blue}
           isLoading={isLoading}
           _loading={{
             bg: Colors.primary,

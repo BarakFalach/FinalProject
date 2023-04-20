@@ -24,7 +24,7 @@ const screenNameToIconName = {
   LeaderBoard: 'star',
   Week: 'calendar',
   Achievements: 'star',
-  'Steps Challenge': 'trophy',
+  'Steps Tracking': 'trophy',
 };
 
 const HomeStack = createNativeStackNavigator();
@@ -84,7 +84,7 @@ function Tabs() {
           tabBarVisible: false,
         }}
       />
-      <Tab.Screen name="Steps Challenge" component={StepsChallenge} />
+      <Tab.Screen name="Steps Tracking" component={StepsChallenge} />
       <Tab.Screen name="LeaderBoard" component={LeaderBoardScreen} />
       {/* <Tab.Screen name="Achievements" component={AchievementsScreen} /> */}
     </Tab.Navigator>

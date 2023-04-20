@@ -13,3 +13,11 @@ export const base_url = 'https://bgufit.com';
 export const SignInErrors = {
   GOOGLE_FIT: 'GOOGLE_FIT',
 };
+
+export const Fonts = {
+  regular: 'Montserrat-Regular',
+  medium: 'Montserrat-Medium',
+  light: 'Montserrat-Light',
+  Bold: 'Montserrat-Bold',
+  SemiBold: 'Montserrat-SemiBold',
+};
