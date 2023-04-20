@@ -1,18 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {useSteps} from './useSteps';
-import {
-  Box,
-  Button,
-  Center,
-  Select,
-  Heading,
-  VStack,
-  HStack,
-  Text,
-} from 'native-base';
+import {Box, Button, Center, Select, VStack, HStack} from 'native-base';
+import {StyleSheet, Text} from 'react-native';
 import {BarChart} from 'react-native-chart-kit';
 import {Dimensions} from 'react-native';
 import {Loader} from '../../components/common/Loader';
+import {Colors, Fonts} from '../../utils/constants';
 
 const chartConfig = {
   backgroundGradientFrom: '#fff',
@@ -21,6 +14,9 @@ const chartConfig = {
   color: (opacity = 0.5) => `rgba(0, 0, 0, ${opacity})`,
   strokeWidth: 0.5,
   barPercentage: 0.5,
+  propsForLabels: {
+    fontFamily: Fonts.regular,
+  },
   style: {
     borderRadius: 16,
     backgroundColor: 'transparent', // Set backgroundColor to 'transparent'
@@ -62,7 +58,7 @@ const StepsChallengeScreen = () => {
     <>
       <Box>
         <Center marginTop={4}>
-          <Heading size="md">Steps Challenge</Heading>
+          <Text style={styles.heading}>Steps Tracking</Text>
         </Center>
         <VStack paddingLeft={2} space={3} paddingTop={4} paddingBottom={3}>
           <HStack space={3} width="200px">
@@ -81,7 +77,7 @@ const StepsChallengeScreen = () => {
                       value: true,
                     })
               }>
-              <Text color="black">Me</Text>
+              <Text style={styles.text}>Me</Text>
             </Button>
             <Button
               flex={1}
@@ -99,7 +95,7 @@ const StepsChallengeScreen = () => {
                     })
                   : null
               }>
-              <Text color="black">Group</Text>
+              <Text style={styles.text}>Group</Text>
             </Button>
           </HStack>
           <Box alignItems="flex-start" maxW="300">
@@ -112,14 +108,15 @@ const StepsChallengeScreen = () => {
             </Select>
           </Box>
         </VStack>
-        <Heading size="sm" padding={2}>{`${
-          option.personal ? 'My' : 'Group'
-        } Steps`}</Heading>
+        <Box padding={2}>
+          <Text style={styles.semiHeader}>{`${
+            option.personal ? 'My' : 'Group'
+          } Steps`}</Text>
+        </Box>
         {isLoading ? (
           <Loader />
         ) : (
           <Box bg="white" shadow={2} borderRadius="md" padding="0.5">
-            {/* <Box> */}
             <BarChart
               data={data}
               width={Dimensions.get('window').width}
@@ -127,8 +124,6 @@ const StepsChallengeScreen = () => {
               chartConfig={chartConfig}
               fromZero
               showValuesOnTopOfBars
-              // withHorizontalLabels={false}
-              // horizontalLabelWidth={0}
             />
           </Box>
         )}
@@ -136,5 +131,22 @@ const StepsChallengeScreen = () => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  text: {
+    fontFamily: Fonts.regular,
+    fontSize: 12,
+  },
+  heading: {
+    fontFamily: Fonts.SemiBold,
+    color: Colors.blue,
+    fontSize: 18,
+  },
+  semiHeader: {
+    fontFamily: Fonts.SemiBold,
+    color: Colors.blue,
+    fontSize: 16,
+  },
+});
 
 export default StepsChallengeScreen;
