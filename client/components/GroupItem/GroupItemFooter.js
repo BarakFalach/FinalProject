@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {GroupContext} from '../../App';
 import {useGroup} from '../../hooks/useGroup';
 import {useUser} from '../../hooks/useUser';
 import GroupIconItem from './GroupIconItem';
@@ -34,9 +33,9 @@ function convertToOrdinal(num) {
 
 const GroupItemFooter = () => {
   const {user} = useUser();
-  const {group} = React.useContext(GroupContext);
+  const {group} = useGroup();
   const position =
-    group?.groupMembers?.findIndex(member => member === user.email) + 1;
+    group?.leaderBoard?.findIndex(member => member?.name === user?.name) + 1;
   return (
     <View style={groupItemFooterStyles.container}>
       <GroupIconItem iconSource={icons.score} value={user?.score} />

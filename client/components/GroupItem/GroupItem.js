@@ -21,7 +21,7 @@ const GroupItem = () => {
         />
       </View>
       <View style={styles.iconContainer}>
-        {group?.groupMembers ? <GroupItemFooter /> : null}
+        {group?.leaderBoard ? <GroupItemFooter /> : null}
       </View>
     </View>
   );

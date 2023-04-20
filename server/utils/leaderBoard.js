@@ -8,8 +8,8 @@ const getUser = async (user) => {
 const getGroupLeaderBoard = async (groupMembers = []) => {
   console.log( "getLeaderBoard, groupMembers:" ,groupMembers);
   const membersAggregate = groupMembers?.map(async (member) => {
-    const { name, score } = await getUser(member);
-    return { name, score };
+    const { name, score, todayStepCount } = await getUser(member);
+    return { name, score:score+todayStepCount };
   });
   const membersWithScores = await Promise.all(membersAggregate)
   return membersWithScores.sort((a, b) => b.score - a.score);
