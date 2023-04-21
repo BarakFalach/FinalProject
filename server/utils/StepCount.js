@@ -1,8 +1,19 @@
-const { stepCountCall } = require('./googleFit');
+const { stepCountCall, getYesterdaysStepCount } = require('./googleFit');
 const StepCount = require('../db/models/StepCount');
 const Group = require('../db/models/Group');
+const User = require('../db/models/User');
+const { OAuth2Client } = require('google-auth-library');
+const port = process.env.PORT || '';
+const base_url = process.env.BASE_URL || 'https://bgufit.com';
+
+const webClientId = process.env.WEB_CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
+const url = `${base_url}:${port}/auth`;
+
+const client = new OAuth2Client(webClientId, clientSecret, url);
 
 const INIT_DATE = new Date("2023,2,1")
+const GROUP_CODE = '7371'
 
 //TODO:: needs to add a refresh token logic
 const initStepCountHistory = async (email, TOKEN) => {
@@ -87,7 +98,31 @@ const groupStepCount = async (groupCode, {startDate, endDate}) => {
   
   return result;
 
+}
+
+const updateYesterdayStepCount = async () => {
+  const group = await Group.findOne({ groupCode: GROUP_CODE });
+  group?.groupMembers?.forEach(async (email) => {
+    const user = await User.findOne({ email });
+    const { tokens } = await client.refreshToken(user.refresh_token);
+    const access_token = tokens.access_token;
+    const stepCount = await getYesterdaysStepCount(access_token);
+
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    yesterday.setHours(0, 0, 0, 0);
+    const stepCountEntity = new StepCount({
+      user_email: email,
+      date: yesterday,
+      step_count: stepCount,
+    });
+    await stepCountEntity.save();
+
+    user.todayStepCount = 0;
+    user.score += stepCount;
+    await user.save();
+  })
 
 }
 
-module.exports = { initStepCountHistory, groupStepCount, userStepCount };
+module.exports = { initStepCountHistory, groupStepCount, userStepCount, updateYesterdayStepCount };

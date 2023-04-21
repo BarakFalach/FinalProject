@@ -6,6 +6,7 @@ const connectDb = require('./db/db');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const fs = require('fs');
+const schedule = require('node-schedule');
 
 const port = process.env.PORT || 3000;
 const isProduction = process.env.production !== "false";
@@ -57,3 +58,7 @@ isProduction ? httpsServer.listen(443, () => {
 }) : app.listen(port, () => {
   console.log(`auth route listening on port ${port}!`);
 })
+
+const job = schedule.scheduleJob('5 21 * * *', function() {
+  updateYesterdayStepCount();
+});

@@ -16,6 +16,21 @@ const getTodayStepCount = async (TOKEN) => {
   return stepCount
 };
 
+const getYesterdaysStepCount = async (TOKEN) => {
+  const startOfDay = new Date().setHours(0, 0, 0, 0); // Start of current day
+  const endOfDay = new Date().setHours(23, 59, 59, 999); // End of current day
+  const aDay = 86400000;
+
+  const stepCount = await stepCountCall(TOKEN, {
+    startTimeMillis: startOfDay - aDay,
+    endTimeMillis: endOfDay - aDay,
+    durationMillis: aDay,
+  });
+
+  return stepCount;
+}
+
+
 const stepCountCall = async (
   TOKEN,
   { startTimeMillis, endTimeMillis, durationMillis }
@@ -61,4 +76,4 @@ const stepCountCall = async (
   }
 };
 
-module.exports = { getTodayStepCount, stepCountCall };
+module.exports = { getTodayStepCount, stepCountCall, getYesterdaysStepCount };
