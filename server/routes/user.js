@@ -15,6 +15,7 @@ router.get('/', async (req, res) => {
     return;
   }
   const todaysStepCount = await getTodayStepCount(user.access_token);
+  
   user.todayStepCount = todaysStepCount;
   await user.save();
   res.json(user);
