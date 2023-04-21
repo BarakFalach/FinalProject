@@ -1,9 +1,10 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
+import {Colors, Fonts} from '../../utils/constants';
 
 const GroupIconItem = props => {
   return (
-    <View>
+    <View style={{width: 100}}>
       <View style={styles.imageContainer}>
         <Image style={styles.icon} source={props.iconSource} />
       </View>
@@ -31,8 +32,8 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: 'black',
+    fontFamily: Fonts.SemiBold,
+    color: Colors.logoBackground,
   },
 });
 
