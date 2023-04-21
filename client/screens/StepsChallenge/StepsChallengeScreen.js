@@ -104,7 +104,11 @@ const StepsChallengeScreen = () => {
               minWidth="150"
               defaultValue={true}>
               <Select.Item label="Week" value={true} />
-              <Select.Item label="Month" value={false} />
+              <Select.Item
+                label="Month"
+                value={false}
+                isDisabled={!option.personal}
+              />
             </Select>
           </Box>
         </VStack>
