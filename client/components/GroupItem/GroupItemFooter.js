@@ -55,7 +55,6 @@ export const groupItemFooterStyles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
-    alignItems: 'center',
     flexDirection: 'row',
   },
 });
