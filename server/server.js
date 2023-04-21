@@ -13,6 +13,9 @@ const isProduction = process.env.production !== "false";
 connectDb();
 app.use(bodyParser.json({ extended: false }));
 
+app.get('/crash', (req, res) => {
+  throw new Error('Intentional server crash');
+});
 
 app.use(session({
   secret: 'keyboard cat', //TODO:: add to .env
