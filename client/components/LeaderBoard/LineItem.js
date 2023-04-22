@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import {GroupContext} from '../../App';
 import {Colors, Fonts} from '../../utils/constants';
@@ -26,6 +26,8 @@ function convertToOrdinal(num) {
   }
 }
 
+const screenWidth = Math.round(Dimensions.get('window').width);
+
 export const LineItem = props => {
   const {name, score} = props.user;
   const {user} = useUser();
@@ -34,7 +36,7 @@ export const LineItem = props => {
   console.log('isUser', name, user?.name, isUser);
   return (
     <View style={styles.rowContainer}>
-      <View style={{width: 120}}>
+      <View style={{width: screenWidth * 0.25}}>
         <Text numberOfLines={1} style={isUser ? styles.userText : styles.text}>
           {convertToOrdinal(props.place + 1)}
         </Text>
@@ -42,13 +44,17 @@ export const LineItem = props => {
       <View
         style={{
           alignItems: 'flex-start',
-          width: 140,
+          width: screenWidth * 0.4,
         }}>
         <Text numberOfLines={1} style={isUser ? styles.userText : styles.text}>
           {name}
         </Text>
       </View>
-      <View style={{width: 120, alignItems: 'flex-end'}}>
+      <View
+        style={{
+          width: screenWidth * 0.25,
+          alignItems: 'flex-end',
+        }}>
         <Text numberOfLines={1} style={isUser ? styles.userText : styles.text}>
           {score}
         </Text>
@@ -60,7 +66,7 @@ export const LineItem = props => {
 const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
-    marginBottom: 10,
+    padding: screenWidth * 0.015,
     justifyContent: 'space-between',
   },
   text: {color: Colors.blue, fontFamily: Fonts.SemiBold, fontSize: 16},
