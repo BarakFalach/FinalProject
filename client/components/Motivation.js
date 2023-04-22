@@ -5,7 +5,7 @@ import {Colors, Fonts} from '../utils/constants';
 export const Motivation = ({content, height}) => {
   return (
     <View style={styles.padding}>
-      <View style={{...styles.card, height: height || 50}}>
+      <View style={{...styles.card}}>
         <Text style={styles.text}>{content}</Text>
       </View>
     </View>
