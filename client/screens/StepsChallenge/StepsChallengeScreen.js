@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useSteps} from './useSteps';
 import {Box, Button, Center, Select, VStack, HStack} from 'native-base';
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {BarChart} from 'react-native-chart-kit';
 import {Dimensions} from 'react-native';
 import {Loader} from '../../components/common/Loader';
@@ -30,6 +30,8 @@ const StepsChallengeScreen = () => {
     week: true,
     personal: true,
   });
+  const screenWidth = Dimensions.get('window').width;
+  const screenHeight = Dimensions.get('window').height;
 
   const onOptionChange = ({value, name}) => {
     setOption(prevState => ({
@@ -57,9 +59,16 @@ const StepsChallengeScreen = () => {
   return (
     <>
       <Box>
-        <Center marginTop={4}>
+        <Center
+          borderColor={'#fed9b7'}
+          borderBottomWidth={2}
+          paddingBottom={3}
+          margin={3}>
           <Text style={styles.heading}>Steps Tracking</Text>
         </Center>
+        {/* <Center marginTop={4}>
+          <Text style={styles.heading}>Steps Tracking</Text>
+        </Center> */}
         <VStack paddingLeft={2} space={3} paddingTop={4} paddingBottom={3}>
           <HStack space={3} width="200px">
             <Button
@@ -112,7 +121,12 @@ const StepsChallengeScreen = () => {
             </Select>
           </Box>
         </VStack>
-        <Box padding={2}>
+        <Box
+          margin={screenWidth * 0.02}
+          padding={screenWidth * 0.01}
+          width={screenWidth * 0.3}
+          borderColor={'#fed9b7'}
+          borderBottomWidth={2}>
           <Text style={styles.semiHeader}>{`${
             option.personal ? 'My' : 'Group'
           } Steps`}</Text>
@@ -120,16 +134,22 @@ const StepsChallengeScreen = () => {
         {isLoading ? (
           <Loader />
         ) : (
-          <Box bg="white" shadow={2} borderRadius="md" padding="0.5">
+          // <View style={{padding: screenWidth * 0.01}}>
+          <Box
+            bg="white"
+            shadow={2}
+            borderRadius="md"
+            margin={screenWidth * 0.01}>
             <BarChart
               data={data}
-              width={Dimensions.get('window').width}
-              height={200}
+              width={screenWidth * 0.95}
+              height={screenHeight * 0.35}
               chartConfig={chartConfig}
               fromZero
               showValuesOnTopOfBars
             />
           </Box>
+          // </View>
         )}
       </Box>
     </>
@@ -142,9 +162,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   heading: {
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Bold,
     color: Colors.blue,
-    fontSize: 18,
+    fontSize: 20,
   },
   semiHeader: {
     fontFamily: Fonts.SemiBold,
