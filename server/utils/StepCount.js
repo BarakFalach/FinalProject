@@ -5,6 +5,7 @@ const User = require('../db/models/User');
 const { OAuth2Client } = require('google-auth-library');
 const port = process.env.PORT || '';
 const base_url = process.env.BASE_URL || 'https://bgufit.com';
+const isProduction = process.env.production !== "false";
 
 const webClientId = process.env.WEB_CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
@@ -110,12 +111,13 @@ const updateYesterdayStepCount = async () => {
 
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-    yesterday.setHours(0, 0, 0, 0);
+    isProduction ? yesterday.setHours(0, 0, 0, 0) : yesterday.setHours(3, 0, 0, 0);
     const stepCountEntity = new StepCount({
       user_email: email,
       date: yesterday,
       step_count: stepCount,
     });
+    console.log(`StepCount of ${email}`, stepCountEntity)
     await stepCountEntity.save();
 
     user.todayStepCount = 0;
