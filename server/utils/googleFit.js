@@ -1,6 +1,7 @@
 const axios = require('axios');
+const isProduction = process.env.production !== "false";
 
-const GMT_OFFSET = 10800000; // 3 hours in milliseconds
+const GMT_OFFSET = isProduction ? 10800000 : 0; // 3 hours in milliseconds
 
 const getTodayStepCount = async (TOKEN) => {
   const startOfDay = new Date().setHours(0, 0, 0, 0); // Start of current day
