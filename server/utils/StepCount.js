@@ -13,8 +13,7 @@ const url = `${base_url}:${port}/auth`;
 
 const client = new OAuth2Client(webClientId, clientSecret, url);
 
-const INIT_DATE = new Date("2023,2,1")
-const GROUP_CODE = '7371'
+const INIT_DATE = new Date("2023,4,1")
 
 //TODO:: needs to add a refresh token logic
 const initStepCountHistory = async (email, TOKEN) => {
@@ -102,28 +101,30 @@ const groupStepCount = async (groupCode, {startDate, endDate}) => {
 }
 
 const updateYesterdayStepCount = async () => {
-  const group = await Group.findOne({ groupCode: GROUP_CODE });
-  group?.groupMembers?.forEach(async (email) => {
-    const user = await User.findOne({ email });
-    const { tokens } = await client.refreshToken(user.refresh_token);
-    const access_token = tokens.access_token;
-    const stepCount = await getYesterdaysStepCount(access_token);
+  const groups = await Group.find();
+  groups.forEach(async (group) => {
+    await group?.groupMembers?.forEach(async (email) => {
+      const user = await User.findOne({ email });
+      const { tokens } = await client.refreshToken(user.refresh_token);
+      const access_token = tokens.access_token;
+      const stepCount = await getYesterdaysStepCount(access_token);
 
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    isProduction ? yesterday.setHours(0, 0, 0, 0) : yesterday.setHours(3, 0, 0, 0);
-    const stepCountEntity = new StepCount({
-      user_email: email,
-      date: yesterday,
-      step_count: stepCount,
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      isProduction ? yesterday.setHours(0, 0, 0, 0) : yesterday.setHours(3, 0, 0, 0);
+      const stepCountEntity = new StepCount({
+        user_email: email,
+        date: yesterday,
+        step_count: stepCount,
+      });
+      console.log(`StepCount of ${email}`, stepCountEntity)
+      await stepCountEntity.save();
+
+      user.todayStepCount = 0;
+      user.score += stepCount;
+      await user.save();
     });
-    console.log(`StepCount of ${email}`, stepCountEntity)
-    await stepCountEntity.save();
-
-    user.todayStepCount = 0;
-    user.score += stepCount;
-    await user.save();
-  })
+  });
 
 }
 

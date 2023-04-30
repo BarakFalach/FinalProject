@@ -60,6 +60,6 @@ isProduction ? httpsServer.listen(443, () => {
   console.log(`auth route listening on port ${port}!`);
 })
 
-const job = schedule.scheduleJob('5 21 * * *', function() {
+const job = schedule.scheduleJob('10 0 * * *', function() {
   updateYesterdayStepCount();
 });
