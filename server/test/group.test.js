@@ -19,7 +19,6 @@ afterAll(async () => {
 // Test suite for the GET /groups endpoint
 describe('GET /groups', () => {
   it('should return all groups', async () => {
-    // Mock the result of Group.find() to return an array of mock groups
     const mockGroups = [
       {
           id: "643704cd7fb171d70e3e3486",
@@ -95,23 +94,18 @@ describe('GET /groups', () => {
   ];
     Group.find.mockResolvedValueOnce(mockGroups);
 
-    // Send a GET request to the endpoint
     const response = await request(app).get('/groups');
 
-    // Expect the response to have a status code of 200 and the mock groups
     expect(response.status).toBe(200);
     expect(response.body).toEqual(mockGroups);
   });
 
   it('should handle error when retrieving groups', async () => {
-    // Mock Group.find() to throw an error
     const errorMessage = 'Error retrieving groups';
     Group.find.mockRejectedValueOnce(new Error(errorMessage));
 
-    // Send a GET request to the endpoint
     const response = await request(app).get('/groups');
 
-    // Expect the response to have a status code of 500 and the error message
     expect(response.status).toBe(500);
     expect(response.text).toBe(errorMessage);
   });
@@ -120,45 +114,34 @@ describe('GET /groups', () => {
 // Test suite for the POST /groups endpoint
 describe('POST /groups', () => {
   it('should create a new group', async () => {
-    // Mock the Group.findOne() to return null (indicating the group doesn't exist)
     Group.findOne.mockResolvedValueOnce(null);
-    // Mock the Group.save() to return the mock group
     const mockGroup = { groupName: 'Test Group' };
     Group.prototype.save.mockResolvedValueOnce(mockGroup);
 
-    // Send a POST request to the endpoint with the mock group data
     const response = await request(app).post('/groups').send(mockGroup);
 
-    // Expect the response to have a status code of 201 and the created group
     expect(response.status).toBe(201);
     expect(response.body).toEqual(mockGroup);
   });
 
   it('should handle error when creating a group that already exists', async () => {
-    // Mock the Group.findOne() to return an existing group
     const mockGroup = { groupName: 'Existing Group' };
     Group.findOne.mockResolvedValueOnce(mockGroup);
 
-    // Send a POST request to the endpoint with the existing group data
     const response = await request(app).post('/groups').send(mockGroup);
 
-    // Expect the response to have a status code of 400 and an error message
     expect(response.status).toBe(400);
     expect(response.text).toBe('Group already exists');
   });
 
   it('should handle error when saving a new group', async () => {
-    // Mock the Group.findOne() to return null (indicating the group doesn't exist)
     Group.findOne.mockResolvedValueOnce(null);
-    // Mock the Group.save() to throw an error
     const mockGroup = { groupName: 'New Group' };
     const errorMessage = 'Error saving group';
     Group.prototype.save.mockRejectedValueOnce(new Error(errorMessage));
 
-    // Send a POST request to the endpoint with the mock group data
     const response = await request(app).post('/groups').send(mockGroup);
 
-    // Expect the response to have a status code of 500 and the error message
     expect(response.status).toBe(500);
     expect(response.text).toBe(errorMessage);
   });

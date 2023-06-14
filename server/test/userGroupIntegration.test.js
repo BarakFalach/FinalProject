@@ -4,13 +4,13 @@ const mongoose = require('mongoose');
 const Group = require('../models/Group');
 const User = require('../models/User');
 
-// Connect to a test database before running the tests
+// Connect to a test database before running the tests some testing db -> not working now beacuse cost money
 beforeAll(async () => {
   await mongoose.connect('mongodb://localhost:27017/testdb', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
-});
+}); 
 
 // Clean up the database after running the tests
 afterAll(async () => {

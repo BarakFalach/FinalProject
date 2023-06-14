@@ -1,8 +1,6 @@
 const request = require('supertest');
-const app = require('server/server.js'); // Assuming `app.js` is the entry point of your application
+const app = require('server/server.js'); 
 const User = require('server/db/models/User.js');
-const express = require('express');
-const router = require('server/routes/user.js'); 
 
 
 //Testing the /users/:id endpoint to get a specific user:
@@ -49,22 +47,17 @@ describe('POST /users', () => {
       score: 100,
     };
 
-    // Mock the User.create() method to return the mock user
     User.create.mockResolvedValueOnce(mockUser);
 
-    // Send a POST request to the users endpoint with the mock user data
     const response = await request(app).post('/users').send(mockUser);
 
-    // Expect the response to have a status code of 201 and the mock user object
     expect(response.status).toBe(201);
     expect(response.body).toEqual(mockUser);
   });
 
   it('should return a 400 error if the user data is invalid', async () => {
-    // Send a POST request to the users endpoint with invalid user data (e.g., missing required fields)
     const response = await request(app).post('/users').send({});
 
-    // Expect the response to have a status code of 400
     expect(response.status).toBe(400);
   });
 });
@@ -80,7 +73,6 @@ describe('PUT /users/score', () => {
     };
     const updatedScore = 150;
 
-    // Mock the User.findOneAndUpdate() method to return the updated mock user
     User.findOneAndUpdate.mockResolvedValueOnce(mockUser);
 
     // Send a PUT request to the user score endpoint with the updated score in the request body
@@ -131,20 +123,16 @@ describe('GET /users/all', () => {
       }
     ];
 
-    // Mock the User.find() method to return the mock users
     User.find.mockResolvedValueOnce(mockUsers);
 
     // Send a GET request to the user all endpoint
     const response = await request(app).get('/users/all');
 
-    // Expect the response to have a status code of 200
     expect(response.status).toBe(200);
-    // Expect the response body to contain the mock users
     expect(response.body).toEqual(mockUsers);
   });
 
   it('should return an empty array if there are no users', async () => {
-    // Mock the User.find() method to return an empty array
     User.find.mockResolvedValueOnce([]);
 
     // Send a GET request to the user all endpoint
@@ -159,10 +147,8 @@ describe('GET /users/all', () => {
 
 describe('DELETE /users/all', () => {
   it('should delete all users and return a success message', async () => {
-    // Mock the User.deleteMany() method to return a resolved promise
     User.deleteMany.mockResolvedValueOnce();
 
-    // Send a DELETE request to the user all endpoint
     const response = await request(app).delete('/users/all');
 
     // Expect the response to have a status code of 200

@@ -4,7 +4,6 @@ const express = require('express');
 const { getGroupLeaderBoard } = require('../utils/leaderBoard');
 const Group = require('server/db/models/Group.js');
 const router = require('server/routes/group.js'); 
-// Mock the Group model and getGroupLeaderBoard function
 jest.mock('../db/models/Group');
 jest.mock('../utils/leaderBoard');
 
@@ -29,10 +28,8 @@ describe('GET /groups/leaderBoard/:name', () => {
       { name: 'Member 2', score: 200 },
     ];
 
-    // Mock the Group.findOne() to return the mock group
     Group.findOne.mockResolvedValueOnce(mockGroup);
 
-    // Mock the getGroupLeaderBoard function to return the mock leaderBoard
     getGroupLeaderBoard.mockResolvedValueOnce(mockLeaderBoard);
 
     // Send a GET request to the endpoint
